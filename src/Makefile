@@ -9,9 +9,8 @@ OBJECTS = ${SOURCES:.cpp=.o}
 .PHONY: all
 all: ${EXECUTABLE}
 
-$(EXECUTABLE): $(OBJECTS) buildnumber.num
+$(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OBJECTS) $(LDXXFLAGS) -o $@
-	@echo "-- Build: " $$(cat buildnumber.num)
 
 # Create dependency file
 depend: $(SOURCES)
@@ -19,11 +18,6 @@ depend: $(SOURCES)
 
 -include depend
 
-# Buildnumber file
-buildnumber.num: $(OBJECTS)
-	@if ! test -f buildnumber.num; then echo 0 > buildnumber.num; fi
-	@echo $$(($$(cat buildnumber.num)+1)) > buildnumber.num
-	
 # Create a clean environment
 .PHONY: clean
 clean:
