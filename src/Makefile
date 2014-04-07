@@ -9,7 +9,7 @@ OBJECTS = ${SOURCES:.cpp=.o}
 .PHONY: all
 all: ${EXECUTABLE}
 
-$(EXECUTABLE): $(OBJECTS) buildnumber.num
+$(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OBJECTS) $(LDXXFLAGS) -o $@
 
 # Create dependency file
