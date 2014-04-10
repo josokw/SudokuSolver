@@ -1,7 +1,9 @@
 Sudoku solver
 =============
 
-Implemented in C++. Uses the STL set templates.
+Implemented in C++. 
+Implemented a Sudoku grid and rows, columns and blocks in STL sets.
+Goal: solve Sudoku puzzle using set operations.
 
 Build
 =====
