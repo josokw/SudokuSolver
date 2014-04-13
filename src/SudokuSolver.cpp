@@ -32,7 +32,7 @@ struct IsUnique
    {
       if (isNotSolved(pSet))
       {
-         SudokuGrid::set_t::iterator it = (*pSet).begin();
+         auto it = (*pSet).begin();
          while (it != (*pSet).end())
          {
             ++(pCount[*it]);
@@ -129,7 +129,7 @@ void SudokuSolver::solveHiddenSinglesPerGroup(SudokuGrid::set_t* group[])
    IsUnique isUnique(count);
 
    for_each(group, group + SudokuGrid::ORDER2, isUnique);
-   unsigned short value = *isUnique.UniqueIndex();
+   SudokuGrid::value_t value = *isUnique.UniqueIndex();
 
    bool ready = false;
    SudokuGrid::set_t** ppSet = group;
@@ -191,7 +191,7 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg)
       }
       if (found)
       {
-         set<unsigned short> C = sdkg.getCellCandidates(row, column);
+         SudokuGrid::set_t C = sdkg.getCellCandidates(row, column);
          int nCandidates = sizeOf(C);
          //cout << "-- " << &Sdkg << " #Candidates for [" << row << "][" << column << "] = " << nCandidates
          //     << "  " << C << endl << endl;
@@ -203,7 +203,7 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg)
             {
                nextSdkg.push_back(sdkg);
             }
-            set<unsigned short>::iterator it = C.begin();
+            auto it = C.begin();
             // Solve Sdkg further
             if (sdkg.add(*it, row, column))
             {

@@ -48,13 +48,13 @@ public:
 
    /// Adds an allowed solution for a certain cell to Cell.
    /// Increments _numberOfCellsSolved.
-   bool add(unsigned short Value, int Row, int Column);
+   bool add(value_t Value, int Row, int Column);
    /// Adds a solution for a certain cell to Cell.
-   void unsafeAdd(unsigned short Value, int Row, int Column);
+   void unsafeAdd(value_t Value, int Row, int Column);
    /// Calculates all candidate solutions for every cell not yet solved.
    void calculateAllCellCandidates();
    /// Gets all candidates for a certain cell.
-   const std::set<unsigned short>& getCellCandidates(int row, int column) const
+   const std::set<value_t>& getCellCandidates(int row, int column) const
    { return _candidates[row][column]; }
    /// Checks if a Sudoku puzzle is solved.
    /// All cells should be solved to fulfill this condition.
@@ -80,7 +80,7 @@ private:
    bool _isSolvable;
    /// Contains for every cell the solution, if the contained value equals 0
    /// then a solution still needs to be calculated.
-   unsigned short _cell[ORDER2][ORDER2];
+   value_t _cell[ORDER2][ORDER2];
    /// All sets containing candidates.
    set_t _columnSet[ORDER2];
    set_t _rowSet[ORDER2];
@@ -100,7 +100,7 @@ private:
    /// Calculates all candidates for a certain cell.
    /// The sets U, ColumnSet, RowSet and BlockSet must be up to date.
    /// Sets IsSolveable status.
-   set_t calculateCellCandidates(int row, int column) const;
+   SudokuGrid::set_t calculateCellCandidates(int row, int column) const;
 
    /// Generates a set containing [b..e)
    static set_t makeRange(int b, int e)
