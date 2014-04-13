@@ -20,5 +20,10 @@
 *.out
 *.app
 
-# Bachup files
+# Backup files
 *~
+
+# Dependencies
+depend
+
+sudoku
