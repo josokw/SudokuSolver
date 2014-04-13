@@ -20,12 +20,12 @@ static bool isNotSolved(SudokuGrid::set_t* pSet)
 
 struct IsUnique
 {
-  size_t* pCount;
+  size_t* _pCount;
 
-  IsUnique(size_t* pCount_)
-    : pCount(pCount_)
+  IsUnique(size_t* pCount)
+    : _pCount(pCount)
   {
-    fill(pCount, pCount + SudokuGrid::ORDER2, 0);
+    fill(_pCount, _pCount + SudokuGrid::ORDER2, 0);
   }
 
   void operator()(SudokuGrid::set_t* pSet)
@@ -35,7 +35,7 @@ struct IsUnique
       auto it = (*pSet).begin();
       while (it != (*pSet).end())
       {
-        ++(pCount[*it]);
+        ++(_pCount[*it]);
         ++it;
       }
     }
@@ -43,13 +43,14 @@ struct IsUnique
 
   size_t* UniqueIndex()
   {
-    return find(pCount, pCount + SudokuGrid::ORDER2, 1);
+    return find(_pCount, _pCount + SudokuGrid::ORDER2, 1);
   }
 };
 
 SudokuSolver::SudokuSolver(const SudokuGrid& initialSdkg, bool wellformed)
   :  _sdkg(initialSdkg)
   ,  _wellformed(wellformed)
+  ,  _solutions()
   ,  _numberOfNotSolvables(0)
   ,  _numberOfNakedSingles(0)
   ,  _numberOfHiddenSingles(0)
@@ -104,21 +105,20 @@ void SudokuSolver::solveNakedSingles(SudokuGrid& sdkg)
 
 void SudokuSolver::solveHiddenSingles(SudokuGrid& sdkg)
 {
-  //cout << endl << "----- Solve 'hidden singles': \n\n" << Sdkg <<  endl;
-
-  for (int index = 0; index < SudokuGrid::ORDER2; ++index)
+  //cout << endl << "----- Solve 'hidden singles': \n\n" << sdkg <<  endl;
+  for (auto& row: sdkg.pRow)
   {
-    solveHiddenSinglesPerGroup(sdkg.pRow[index]);
+    solveHiddenSinglesPerGroup(row);
     solveNakedSingles(sdkg);
   }
-  for (int index = 0; index < SudokuGrid::ORDER2; ++index)
+  for (auto& colomn: sdkg.pColumn)
   {
-    solveHiddenSinglesPerGroup(sdkg.pColumn[index]);
+    solveHiddenSinglesPerGroup(colomn);
     solveNakedSingles(sdkg);
   }
-  for (int index = 0; index < SudokuGrid::ORDER2; ++index)
+  for (auto& block: sdkg.pBlock)
   {
-    solveHiddenSinglesPerGroup(sdkg.pBlock[index]);
+    solveHiddenSinglesPerGroup(block);
     solveNakedSingles(sdkg);
   }
 }
@@ -139,7 +139,7 @@ void SudokuSolver::solveHiddenSinglesPerGroup(SudokuGrid::set_t* group[])
     if (ready)
     {
       ++_numberOfHiddenSingles;
-      //cout << "Hidden single: " << Value << endl;
+      //cout << "Hidden single: " << value << endl;
       (*ppSet)->clear();
       (*ppSet)->insert(value);
       ready = true;
@@ -152,7 +152,7 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg)
 {
   //cout << "---- Solve by recursion:" << endl << endl;
   solveNakedSingles(sdkg);
-  //solveHiddenSingles(sdkg);
+  solveHiddenSingles(sdkg);
   if (!sdkg.isSolvable())
   {
     return;
