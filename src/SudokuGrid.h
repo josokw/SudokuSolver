@@ -39,8 +39,8 @@ public:
    typedef std::set<value_t> set_t;
 
    static const int ORDER = 3;
-   static const int ORDER2 = ORDER * ORDER;
-   static const int ORDER4 = ORDER2 * ORDER2;
+   static const int ORDER2 = (ORDER * ORDER);
+   static const int ORDER4 = (ORDER2 * ORDER2);
 
    SudokuGrid();
    SudokuGrid(const SudokuGrid& sdkg);

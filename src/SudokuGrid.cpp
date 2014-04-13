@@ -139,8 +139,8 @@ SudokuGrid& SudokuGrid::operator=(const SudokuGrid& sdkg)
         _candidates[row][column] = sdkg._candidates[row][column];
       }
     }
-    copy(sdkg._columnSet, sdkg._columnSet + SudokuGrid::ORDER2, _columnSet);
-    copy(sdkg._rowSet, sdkg._rowSet + SudokuGrid::ORDER2, _rowSet);
+    copy(begin(sdkg._columnSet), end(sdkg._columnSet), begin(_columnSet));
+    copy(begin(sdkg._rowSet), end(sdkg._rowSet), begin(_rowSet));
     for (int row = 0; row < SudokuGrid::ORDER; ++row)
     {
       for (int column = 0; column < SudokuGrid::ORDER; ++column)
