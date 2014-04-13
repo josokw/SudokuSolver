@@ -8,42 +8,42 @@
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::set<T>& set)
 {
-   os << "{ ";
-   std::copy(set.begin(), set.end(), std::ostream_iterator<T>(os, " "));
-   os << "}";
-   return os;
+  os << "{ ";
+  std::copy(set.begin(), set.end(), std::ostream_iterator<T>(os, " "));
+  os << "}";
+  return os;
 }
 
 template<typename T>
 std::set<T> Union(const std::set<T>& setA, const std::set<T>& setB)
 {
-   std::set<T> setC;
-   std::set_union(setA.begin(), setA.end(), setB.begin(), setB.end(),
-                  std::insert_iterator<std::set<T> >(setC, setC.begin()));
-   return setC;
+  std::set<T> setC;
+  std::set_union(setA.begin(), setA.end(), setB.begin(), setB.end(),
+                 std::insert_iterator<std::set<T> >(setC, setC.begin()));
+  return setC;
 }
 
 template<typename T>
 inline
 std::set<T> operator+(const std::set<T>& setA, const std::set<T>& setB)
 {
-   return Union(setA, setB);
+  return Union(setA, setB);
 }
 
 template<typename T>
 std::set<T> difference(const std::set<T>& setA, const std::set<T>& setB)
 {
-   std::set<T> setC;
-   std::set_difference(setA.begin(), setA.end(), setB.begin(), setB.end(),
-                       std::insert_iterator<std::set<T> >(setC, setC.begin()));
-   return setC;
+  std::set<T> setC;
+  std::set_difference(setA.begin(), setA.end(), setB.begin(), setB.end(),
+                      std::insert_iterator<std::set<T> >(setC, setC.begin()));
+  return setC;
 }
 
 template<typename T>
 inline
 std::set<T> operator-(const std::set<T>& setA, const std::set<T>& setB)
 {
-   return difference(setA, setB);
+  return difference(setA, setB);
 }
 
 template<typename T>

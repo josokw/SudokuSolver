@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------------- SudokuSolver.h
+//--------------------------------------------------------------- SudokuSolver.h
 
 #ifndef SUDOKUSOLVER_H
 #define SUDOKUSOLVER_H
 
+#include "SudokuGrid.h"
+
 #include <vector>
 #include <ctime>
-
-#include "SudokuGrid.h"
 
 class SudokuSolver
 {
@@ -33,5 +33,4 @@ private:
 
 #endif
 
-//------------------------------------------------------------------------------- eof SudokuSolver.h
-
+//----------------------------------------------------------- eof SudokuSolver.h

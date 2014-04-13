@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
         cout << "---- Sudoku file: " << fileName << "\n\n";
 
         SudokuGrid sdkg;
-        vector<SudokuGrid> solutions(5);
+        vector<SudokuGrid> solutions;
 
         Input >> sdkg;
         SudokuSolver sdkSolver(sdkg, 1);
