@@ -1,5 +1,5 @@
 CXX = clang++ 
-CXXFLAGS = -Wall -Wextra -Weffc++ -O3
+CXXFLAGS = -std=c++11 -Wall -Wextra -Weffc++ -O3
 
 EXECUTABLE = sudoku
 SOURCES = ${wildcard *.cpp}
