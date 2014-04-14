@@ -97,7 +97,7 @@ private:
   std::array<set_t, ORDER2> _rowSet;
   std::array<std::array<set_t, ORDER>, ORDER> _blockSet;
   /// Contains for every cell not yet solved, the set of candidate solutions.
-  set_t _candidates[ORDER2][ORDER2];
+  std::array<std::array<set_t, ORDER2>, ORDER2> _candidates;
 
 public:
   /// Group arrays of pointers to Candidates
