@@ -10,7 +10,10 @@
 using namespace std;
 
 const SudokuGrid::set_t SudokuGrid::EMPTY;
-const SudokuGrid::set_t SudokuGrid::U {makeRange(1, SudokuGrid::ORDER2 + 1)};
+const SudokuGrid::set_t SudokuGrid::U
+{
+  makeRange(1, SudokuGrid::ORDER2 + 1)
+};
 
 ostream& operator<<(ostream& os, const SudokuGrid& sdkg)
 {
@@ -91,6 +94,7 @@ SudokuGrid::SudokuGrid()
   , _cell {{}}
   , _columnSet {{}}
   , _rowSet {{}}
+  , _blockSet {{}}
 {
   for (int row = 0; row < SudokuGrid::ORDER2; ++row)
   {
@@ -103,7 +107,10 @@ SudokuGrid::SudokuGrid()
   _rowSet.fill(U);
   for (int row = 0; row < SudokuGrid::ORDER; ++row)
   {
-    fill(_blockSet[row], _blockSet[row] + SudokuGrid::ORDER, U);
+    for (int column = 0; column < SudokuGrid::ORDER; ++column)
+    {
+      _blockSet[row][column] = U;
+    }
   }
   mapPointerArraysToCandidates();
 }
@@ -114,6 +121,7 @@ SudokuGrid::SudokuGrid(const SudokuGrid& sdkg)
   ,  _cell {{}}
   ,  _columnSet {{}}
   ,  _rowSet {{}}
+  ,  _blockSet {{}}
 {
   _cell = sdkg._cell;
   _columnSet = sdkg._columnSet;
@@ -126,11 +134,7 @@ SudokuGrid::SudokuGrid(const SudokuGrid& sdkg)
       _candidates[row][column] = sdkg._candidates[row][column];
     }
   }
-  for (int row = 0; row < SudokuGrid::ORDER; ++row)
-  {
-    copy(sdkg._blockSet[row], sdkg._blockSet[row] +  SudokuGrid::ORDER,
-         _blockSet[row]);
-  }
+  _blockSet = sdkg._blockSet;
   mapPointerArraysToCandidates();
 }
 
@@ -151,13 +155,7 @@ SudokuGrid& SudokuGrid::operator=(const SudokuGrid& sdkg)
     }
     _columnSet = sdkg._columnSet;
     _rowSet = sdkg._rowSet;
-    for (int row = 0; row < SudokuGrid::ORDER; ++row)
-    {
-      for (int column = 0; column < SudokuGrid::ORDER; ++column)
-      {
-        _blockSet[row][column] = sdkg._blockSet[row][column];
-      }
-    }
+    _blockSet = sdkg._blockSet;
     mapPointerArraysToCandidates();
   }
   return *this;
