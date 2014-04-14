@@ -10,9 +10,9 @@
 using namespace std;
 
 const SudokuGrid::set_t SudokuGrid::EMPTY;
-const SudokuGrid::set_t SudokuGrid::U(makeRange(1, SudokuGrid::ORDER2 + 1));
+const SudokuGrid::set_t SudokuGrid::U {makeRange(1, SudokuGrid::ORDER2 + 1)};
 
-ostream& operator<<(ostream& os, const SudokuGrid& Sdkg)
+ostream& operator<<(ostream& os, const SudokuGrid& sdkg)
 {
   for (int row = 0; row < SudokuGrid::ORDER2; ++row)
   {
@@ -22,13 +22,13 @@ ostream& operator<<(ostream& os, const SudokuGrid& Sdkg)
       {
         os << "|";
       }
-      if (!Sdkg.cellIsSolved(row, col))
+      if (!sdkg.cellIsSolved(row, col))
       {
         os << " . ";
       }
       else
       {
-        os << " " << Sdkg._cell[row][col] << " ";
+        os << " " << sdkg._cell[row][col] << " ";
       }
     }
     os << endl;
@@ -46,7 +46,7 @@ ostream& operator<<(ostream& os, const SudokuGrid& Sdkg)
 
 std::istream& operator>>(std::istream& is, SudokuGrid& sdkg)
 {
-  int value = 0;
+  int value {0};
 
   for (int row = 0; row < SudokuGrid::ORDER2; ++row)
   {
@@ -86,16 +86,21 @@ void writeLatex(std::ostream& os, const SudokuGrid& sdkg)
 }
 
 SudokuGrid::SudokuGrid()
-  :  _numberOfCellsSolved(0)
-  ,  _isSolvable(true)
+  : _numberOfCellsSolved {0}
+  , _isSolvable {true}
+  , _cell {{}}
+  , _columnSet {{}}
+  , _rowSet {{}}
 {
   for (int row = 0; row < SudokuGrid::ORDER2; ++row)
   {
-    fill(_cell[row], _cell[row] + SudokuGrid::ORDER, 0);
-    fill(_candidates[row], _candidates[row] + SudokuGrid::ORDER, U);
+    for (int column = 0; column < SudokuGrid::ORDER2; ++column)
+    {
+      _candidates[row][column] = U;
+    }
   }
-  fill(_columnSet, _columnSet + SudokuGrid::ORDER2, U);
-  fill(_rowSet, _rowSet + SudokuGrid::ORDER2, U);
+  _columnSet.fill(U);
+  _rowSet.fill(U);
   for (int row = 0; row < SudokuGrid::ORDER; ++row)
   {
     fill(_blockSet[row], _blockSet[row] + SudokuGrid::ORDER, U);
@@ -103,23 +108,27 @@ SudokuGrid::SudokuGrid()
   mapPointerArraysToCandidates();
 }
 
-SudokuGrid::SudokuGrid(const SudokuGrid& Sdkg)
-  :  _numberOfCellsSolved(Sdkg._numberOfCellsSolved)
-  ,  _isSolvable(Sdkg._isSolvable)
+SudokuGrid::SudokuGrid(const SudokuGrid& sdkg)
+  :  _numberOfCellsSolved {sdkg._numberOfCellsSolved}
+  ,  _isSolvable {sdkg._isSolvable}
+  ,  _cell {{}}
+  ,  _columnSet {{}}
+  ,  _rowSet {{}}
 {
+  _cell = sdkg._cell;
+  _columnSet = sdkg._columnSet;
+  _rowSet = sdkg._rowSet;
   for (int row = 0; row < SudokuGrid::ORDER2; ++row)
   {
     for (int column = 0; column < SudokuGrid::ORDER2; ++column)
     {
-      _cell[row][column] = Sdkg._cell[row][column];
-      _candidates[row][column] = Sdkg._candidates[row][column];
+      //_cell[row][column] = sdkg._cell[row][column];
+      _candidates[row][column] = sdkg._candidates[row][column];
     }
   }
-  copy(Sdkg._columnSet, Sdkg._columnSet + SudokuGrid::ORDER2, _columnSet);
-  copy(Sdkg._rowSet, Sdkg._rowSet + SudokuGrid::ORDER2, _rowSet);
   for (int row = 0; row < SudokuGrid::ORDER; ++row)
   {
-    copy(Sdkg._blockSet[row], Sdkg._blockSet[row] +  SudokuGrid::ORDER,
+    copy(sdkg._blockSet[row], sdkg._blockSet[row] +  SudokuGrid::ORDER,
          _blockSet[row]);
   }
   mapPointerArraysToCandidates();
@@ -131,16 +140,17 @@ SudokuGrid& SudokuGrid::operator=(const SudokuGrid& sdkg)
   {
     _numberOfCellsSolved = sdkg._numberOfCellsSolved;
     _isSolvable = sdkg._isSolvable;
+    _cell = sdkg._cell;
     for (int row = 0; row < SudokuGrid::ORDER2; ++row)
     {
       for (int column = 0; column < SudokuGrid::ORDER2; ++column)
       {
-        _cell[row][column] = sdkg._cell[row][column];
+        //_cell[row][column] = sdkg._cell[row][column];
         _candidates[row][column] = sdkg._candidates[row][column];
       }
     }
-    copy(begin(sdkg._columnSet), end(sdkg._columnSet), begin(_columnSet));
-    copy(begin(sdkg._rowSet), end(sdkg._rowSet), begin(_rowSet));
+    _columnSet = sdkg._columnSet;
+    _rowSet = sdkg._rowSet;
     for (int row = 0; row < SudokuGrid::ORDER; ++row)
     {
       for (int column = 0; column < SudokuGrid::ORDER; ++column)
@@ -155,7 +165,7 @@ SudokuGrid& SudokuGrid::operator=(const SudokuGrid& sdkg)
 
 bool SudokuGrid::add(value_t value, int row, int column)
 {
-  bool isAdded = false;
+  bool isAdded {false};
 
   if (isAnElementOf(value, SudokuGrid::U))
   {
@@ -206,7 +216,7 @@ void SudokuGrid::unsafeAdd(value_t value, int row, int column)
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void SudokuGrid::calculateAllCellCandidates()
 {

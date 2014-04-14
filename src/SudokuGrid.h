@@ -3,6 +3,7 @@
 #ifndef SUDOKUGRID_H
 #define SUDOKUGRID_H
 
+#include <array>
 #include <iostream>
 #include <set>
 
@@ -48,9 +49,9 @@ public:
 
   /// Adds an allowed solution for a certain cell to Cell.
   /// Increments _numberOfCellsSolved.
-  bool add(value_t Value, int Row, int Column);
+  bool add(value_t value, int row, int column);
   /// Adds a solution for a certain cell to Cell.
-  void unsafeAdd(value_t Value, int Row, int Column);
+  void unsafeAdd(value_t value, int row, int column);
   /// Calculates all candidate solutions for every cell not yet solved.
   void calculateAllCellCandidates();
   /// Gets all candidates for a certain cell.
@@ -81,19 +82,19 @@ public:
   }
 
 private:
-  /// Set EMPTY, empty set
+  /// Set EMPTY, empty set.
   static const set_t EMPTY;
   /// Set U: Universe, this set contains all allowed cell values (solutions).
   static const set_t U;
-  /// Number of cells solved
+  /// Number of cells solved.
   int _numberOfCellsSolved;
   bool _isSolvable;
   /// Contains for every cell the solution, if the contained value equals 0
   /// then a solution still needs to be calculated.
-  value_t _cell[ORDER2][ORDER2];
+  std::array<std::array<value_t, ORDER2>, ORDER2> _cell;
   /// All sets containing candidates.
-  set_t _columnSet[ORDER2];
-  set_t _rowSet[ORDER2];
+  std::array<set_t, ORDER2> _columnSet;
+  std::array<set_t, ORDER2> _rowSet;
   set_t _blockSet[ORDER][ORDER];
   /// Contains for every cell not yet solved, the set of candidate solutions.
   set_t _candidates[ORDER2][ORDER2];
