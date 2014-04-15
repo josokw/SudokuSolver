@@ -1,24 +1,26 @@
 Sudoku solver
 =============
 
-Implemented in C++. 
-Implemented a Sudoku grid and rows, columns and blocks in STL sets.
-Goal: solve Sudoku puzzle using set operations.
+Implemented a console application in C++. The initial code was in C++98.
+
+Sudoku grid (9x9): rows, columns and blocks.
+Goal: solve Sudoku puzzles using set operations (STL set templates).
 
 Build
 =====
-
 The makefile is in the src directory.
 
-cd src
-make
+  cd src
+  
+  make
 
 Execute program
 ===============
 
-Current directory src
+Some puzzles are available in the puzzles directory.
+Go to the src directory for starting the program.
 
-./sudoku ../puzzles/Data01.sdk
+  ./sudoku ../puzzles/Data01.sdk
 
 
 Under construction.
