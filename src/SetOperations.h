@@ -1,5 +1,8 @@
 //-------------------------------------------------------------- SetOperations.h
 
+#ifndef SETOPERATIONS_H
+#define SETOPERATIONS_H
+
 #include <algorithm>
 #include <iostream>
 #include <iterator>
@@ -9,7 +12,7 @@ template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::set<T>& set)
 {
   os << "{ ";
-  std::copy(set.begin(), set.end(), std::ostream_iterator<T>(os, " "));
+  std::copy(begin(set), end(set), std::ostream_iterator<T>(os, " "));
   os << "}";
   return os;
 }
@@ -18,8 +21,8 @@ template<typename T>
 std::set<T> Union(const std::set<T>& setA, const std::set<T>& setB)
 {
   std::set<T> setC;
-  std::set_union(setA.begin(), setA.end(), setB.begin(), setB.end(),
-                 std::insert_iterator<std::set<T> >(setC, setC.begin()));
+  std::set_union(begin(setA), end(setA), begin(setB), end(setB),
+                 std::insert_iterator<std::set<T> >(setC, begin(setC)));
   return setC;
 }
 
@@ -34,8 +37,8 @@ template<typename T>
 std::set<T> difference(const std::set<T>& setA, const std::set<T>& setB)
 {
   std::set<T> setC;
-  std::set_difference(setA.begin(), setA.end(), setB.begin(), setB.end(),
-                      std::insert_iterator<std::set<T> >(setC, setC.begin()));
+  std::set_difference(begin(setA), end(setA), begin(setB), end(setB),
+                      std::insert_iterator<std::set<T>>(setC, begin(setC)));
   return setC;
 }
 
@@ -50,8 +53,8 @@ template<typename T>
 std::set<T> intersection(const std::set<T>& setA, const std::set<T>& setB)
 {
   std::set<T> setC;
-  std::set_intersection(setA.begin(), setA.end(), setB.begin(), setB.end(),
-                        std::insert_iterator<std::set<T> >(setC, setC.begin()));
+  std::set_intersection(begin(setA), end(setA), begin(setB), end(setB),
+                        std::insert_iterator<std::set<T>>(setC, begin(setC)));
   return setC;
 }
 
@@ -84,14 +87,12 @@ bool isASubsetOf(const std::set<T>& setA, const std::set<T>& setB)
   {
     return true;
   }
-
-  typename std::set<T>::const_iterator iSetA;
-  typename std::set<T>::const_iterator iSetB = setB.begin();
-
-  while (iSetB != setB.end())
+  auto iSetA = std::begin(setA);
+  auto iSetB = std::begin(setB);
+  while (iSetB != end(setB))
   {
     iSetA = setA.find(*iSetB++);
-    if (iSetA == setA.end())
+    if (iSetA == end(setA))
     {
       return false;
     }
@@ -103,7 +104,7 @@ template<typename T>
 inline
 bool isAnElementOf(const T& element, const std::set<T>& set)
 {
-  return set.find(element) != set.end();
+  return set.find(element) != end(set);
 }
 
 template<typename T>
@@ -112,5 +113,7 @@ int sizeOf(const std::set<T>& set)
 {
   return set.size();
 }
+
+#endif
 
 //------------------------------------------------------------ eof SetOperations
