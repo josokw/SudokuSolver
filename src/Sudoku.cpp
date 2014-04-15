@@ -47,6 +47,8 @@ int main(int argc, char *argv[])
         vector<SudokuGrid> solutions;
 
         Input >> sdkg;
+        writeCandidates(cout, sdkg);
+        getchar();
         SudokuSolver sdkSolver(sdkg, 1);
 
         auto t1 = chrono::system_clock::now();

@@ -10,29 +10,28 @@
 /// A Sudoku grid of order N contains N x N x N cells:
 /// N x N rows, N x N columns and N blocks.
 ///
-/// Well formed Sudoku puzzles have only 1 solution.
-//
-/// Sudoku Grid (of order 3) terms:
-/// Band (floor): Three boxes connected horizontally to make a 9 by 3 rectangle.
-/// Box (block): One of the 3 by 3 squares of cells in the grid when it is
-///              divided into nine equal squares.
-/// Cell (square): A single square in the puzzle where one digit can be placed.
-/// Chute: A band or a stack.
+/// Sudoku grid of order 3 terms:
+/// Band: Three boxes connected horizontally to make a 9 by 3 rectangle.
+/// Block: One of the 3 by 3 squares of cells in the grid when it is
+///        divided into nine equal squares.
+/// Cell: A single square in the puzzle where one digit can be placed.
 /// Column: 9 cells of the puzzle running in a straight line from top to bottom
 /// Grid: The full 9 by 9 set of cells
-/// Group (house, unit, scope): A box, row or column
-/// Line: A box or column.
+/// Group: A block, row or column.
 /// Pair: Two cells in the same group with only the same two candidates.
 /// Rectangle: This can refer to any rectangular set of cells of any size.
-/// Row: 9 cells of the puzzle running in a straight line from left to right
+/// Row: 9 cells of the puzzle running in a straight line from left to right.
 /// Square: This can refer to any square set of cells of any size.
-/// Stack (tower): Three boxes stacked vertically to make a 3 by 9 rectangle.
+/// Stack: Three blocks stacked vertically to make a 3 by 9 rectangle.
+///
+/// Well formed Sudoku puzzles have only 1 solution.
 ///
 class SudokuGrid
 {
   friend bool operator==(const SudokuGrid& lhs, const SudokuGrid& rhs);
   friend std::ostream& operator<<(std::ostream& os, const SudokuGrid& sdkg);
   friend std::istream& operator>>(std::istream& is, SudokuGrid& sdkg);
+  friend void writeCandidates(std::ostream& os, const SudokuGrid& sdkg);
   friend void writeLatex(std::ostream& os, const SudokuGrid& sdkg);
 
 public:

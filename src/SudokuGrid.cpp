@@ -63,8 +63,88 @@ std::istream& operator>>(std::istream& is, SudokuGrid& sdkg)
       }
     }
   }
-
+  sdkg.calculateAllCellCandidates();
   return is;
+}
+
+void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
+{
+  for (int row = 0; row < SudokuGrid::ORDER2; ++row)
+  {
+    for (int col = 0; col < SudokuGrid::ORDER2; ++col)
+    {
+      SudokuGrid::set_t candidates = sdkg.getCellCandidates(row, col);
+      for (SudokuGrid::value_t v = 1; v < 4; ++v)
+      {
+        if (isAnElementOf(v, candidates))
+        {
+          os << v;
+        }
+        else
+        {
+          os << '.';
+        }
+      }
+      if ((col != 0) && (col % SudokuGrid::ORDER == 2))
+      {
+        os << " | ";
+      }
+      else
+      {
+        os << " ";
+      }
+    }
+    os << endl;
+    for (int col = 0; col < SudokuGrid::ORDER2; ++col)
+    {
+      SudokuGrid::set_t candidates {sdkg.getCellCandidates(row, col)};
+      for (SudokuGrid::value_t v = 4; v < 7; ++v)
+      {
+        if (isAnElementOf(v, candidates))
+        {
+          os << v;
+        }
+        else
+        {
+          os << '.';
+        }
+      }
+      if ((col != 0) && (col % SudokuGrid::ORDER == 2))
+      {
+        os << " | ";
+      }
+      else
+      {
+        os << " ";
+      }
+    }
+    os << endl;
+    for (int col = 0; col < SudokuGrid::ORDER2; ++col)
+    {
+      SudokuGrid::set_t candidates {sdkg.getCellCandidates(row, col)};
+      for (SudokuGrid::value_t v = 7; v < 10; ++v)
+      {
+        if (isAnElementOf(v, candidates))
+        {
+          os << v;
+        }
+        else
+        {
+          os << '.';
+        }
+      }
+      if ((col != 0) && (col % SudokuGrid::ORDER == 2))
+      {
+        os << " | ";
+      }
+      else
+      {
+        os << " ";
+      }
+    }
+    os << endl << endl;
+    if ((row % 3) == 2) os << string(41, '-') << endl;
+  }
 }
 
 void writeLatex(std::ostream& os, const SudokuGrid& sdkg)
@@ -90,12 +170,12 @@ void writeLatex(std::ostream& os, const SudokuGrid& sdkg)
 
 SudokuGrid::SudokuGrid()
   : _numberOfCellsSolved {0}
-  , _isSolvable {true}
-  , _cell {{}}
-  , _columnSet {{}}
-  , _rowSet {{}}
-  , _blockSet {{}}
-  , _candidates {{}}
+, _isSolvable {true}
+, _cell {{}}
+, _columnSet {{}}
+, _rowSet {{}}
+, _blockSet {{}}
+, _candidates {{}}
 {
   for (int row = 0; row < SudokuGrid::ORDER2; ++row)
   {
@@ -118,12 +198,12 @@ SudokuGrid::SudokuGrid()
 
 SudokuGrid::SudokuGrid(const SudokuGrid& sdkg)
   :  _numberOfCellsSolved {sdkg._numberOfCellsSolved}
-  ,  _isSolvable {sdkg._isSolvable}
-  ,  _cell {{}}
-  ,  _columnSet {{}}
-  ,  _rowSet {{}}
-  ,  _blockSet {{}}
-  ,  _candidates {{}}
+,  _isSolvable {sdkg._isSolvable}
+,  _cell {{}}
+,  _columnSet {{}}
+,  _rowSet {{}}
+,  _blockSet {{}}
+,  _candidates {{}}
 {
   _cell = sdkg._cell;
   _columnSet = sdkg._columnSet;
