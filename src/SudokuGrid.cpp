@@ -149,7 +149,7 @@ SudokuGrid& SudokuGrid::operator=(const SudokuGrid& sdkg)
   return *this;
 }
 
-bool SudokuGrid::add(value_t value, int row, int column)
+bool SudokuGrid::add(const value_t value, int row, int column)
 {
   bool isAdded {false};
 
@@ -189,7 +189,7 @@ bool SudokuGrid::add(value_t value, int row, int column)
   return isAdded;
 }
 
-void SudokuGrid::unsafeAdd(value_t value, int row, int column)
+void SudokuGrid::unsafeAdd(const value_t value, int row, int column)
 {
   _columnSet[column].erase(value);
   _rowSet[row].erase(value);

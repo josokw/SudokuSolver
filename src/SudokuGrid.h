@@ -36,8 +36,8 @@ class SudokuGrid
   friend void writeLatex(std::ostream& os, const SudokuGrid& sdkg);
 
 public:
-  typedef unsigned short value_t;
-  typedef std::set<value_t> set_t;
+  using value_t = unsigned short;
+  using set_t = std::set<value_t>;
 
   static const int ORDER = 3;
   static const int ORDER2 = (ORDER * ORDER);
@@ -49,13 +49,13 @@ public:
 
   /// Adds an allowed solution for a certain cell to Cell.
   /// Increments _numberOfCellsSolved.
-  bool add(value_t value, int row, int column);
+  bool add(const value_t value, int row, int column);
   /// Adds a solution for a certain cell to Cell.
-  void unsafeAdd(value_t value, int row, int column);
+  void unsafeAdd(const value_t value, int row, int column);
   /// Calculates all candidate solutions for every cell not yet solved.
   void calculateAllCellCandidates();
   /// Gets all candidates for a certain cell.
-  const std::set<value_t>& getCellCandidates(int row, int column) const
+  const set_t& getCellCandidates(int row, int column) const
   {
     return _candidates[row][column];
   }
