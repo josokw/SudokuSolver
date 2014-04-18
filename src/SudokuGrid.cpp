@@ -9,6 +9,15 @@
 
 using namespace std;
 
+namespace
+{
+const string subhorz(13, '-');
+const string subhorz2(13, ' ');
+const string horz {"+" + subhorz + "+" + subhorz + "+" + subhorz + "+"};
+const string horz2 {"|" + subhorz2 + "|" + subhorz2 + "|" + subhorz2 + "|"};
+const string vert(11, '|');
+}
+
 const SudokuGrid::set_t SudokuGrid::EMPTY;
 const SudokuGrid::set_t SudokuGrid::U
 {
@@ -73,6 +82,13 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
   {
     for (int col = 0; col < SudokuGrid::ORDER2; ++col)
     {
+      if (col == 0
+          && row % SudokuGrid::ORDER == 0
+          && row < SudokuGrid::ORDER2 - 1)
+      {
+        os << horz << endl << horz2 << endl;
+      }
+      if (col == 0) os << "| ";
       SudokuGrid::set_t candidates = sdkg.getCellCandidates(row, col);
       for (SudokuGrid::value_t v = 1; v < 4; ++v)
       {
@@ -82,7 +98,7 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
         }
         else
         {
-          os << '.';
+          candidates == SudokuGrid::EMPTY ? os << ' ' : os << '.';
         }
       }
       if ((col != 0) && (col % SudokuGrid::ORDER == 2))
@@ -97,6 +113,7 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
     os << endl;
     for (int col = 0; col < SudokuGrid::ORDER2; ++col)
     {
+      if (col == 0) os << "| ";
       SudokuGrid::set_t candidates {sdkg.getCellCandidates(row, col)};
       for (SudokuGrid::value_t v = 4; v < 7; ++v)
       {
@@ -106,7 +123,7 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
         }
         else
         {
-          os << '.';
+          candidates == SudokuGrid::EMPTY ? os << ' ' : os << '.';
         }
       }
       if ((col != 0) && (col % SudokuGrid::ORDER == 2))
@@ -121,6 +138,7 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
     os << endl;
     for (int col = 0; col < SudokuGrid::ORDER2; ++col)
     {
+      if (col == 0) os << "| ";
       SudokuGrid::set_t candidates {sdkg.getCellCandidates(row, col)};
       for (SudokuGrid::value_t v = 7; v < 10; ++v)
       {
@@ -130,7 +148,7 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
         }
         else
         {
-          os << '.';
+          candidates == SudokuGrid::EMPTY ? os << ' ' : os << '.';
         }
       }
       if ((col != 0) && (col % SudokuGrid::ORDER == 2))
@@ -142,9 +160,9 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
         os << " ";
       }
     }
-    os << endl << endl;
-    if ((row % 3) == 2) os << string(41, '-') << endl;
+    os << endl << horz2 << endl;
   }
+  os << horz << endl;
 }
 
 void writeLatex(std::ostream& os, const SudokuGrid& sdkg)
