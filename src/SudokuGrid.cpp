@@ -90,7 +90,7 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
       }
       if (col == 0) os << "| ";
       SudokuGrid::set_t candidates = sdkg.getCellCandidates(row, col);
-      for (SudokuGrid::value_t v = 1; v < 4; ++v)
+      for (SudokuGrid::value_t v = 1; v <= SudokuGrid::ORDER; ++v)
       {
         if (isAnElementOf(v, candidates))
         {
@@ -114,8 +114,10 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
     for (int col = 0; col < SudokuGrid::ORDER2; ++col)
     {
       if (col == 0) os << "| ";
+      int pos {-1};
       SudokuGrid::set_t candidates {sdkg.getCellCandidates(row, col)};
-      for (SudokuGrid::value_t v = 4; v < 7; ++v)
+      for (SudokuGrid::value_t v = SudokuGrid::ORDER + 1;
+           v <= 2 * SudokuGrid::ORDER; ++v)
       {
         if (isAnElementOf(v, candidates))
         {
@@ -123,7 +125,15 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
         }
         else
         {
-          candidates == SudokuGrid::EMPTY ? os << ' ' : os << '.';
+          if (candidates == SudokuGrid::EMPTY)
+          {
+            ++pos;
+            (pos == 1) ? os <<  sdkg._cell[row][col] : os << ' ';
+          }
+          else
+          {
+            os << '.';
+          }
         }
       }
       if ((col != 0) && (col % SudokuGrid::ORDER == 2))
@@ -140,7 +150,8 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
     {
       if (col == 0) os << "| ";
       SudokuGrid::set_t candidates {sdkg.getCellCandidates(row, col)};
-      for (SudokuGrid::value_t v = 7; v < 10; ++v)
+      for (SudokuGrid::value_t v = 2 * SudokuGrid::ORDER + 1;
+           v < 3 * SudokuGrid::ORDER + 1; ++v)
       {
         if (isAnElementOf(v, candidates))
         {
