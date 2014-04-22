@@ -24,9 +24,7 @@ private:
   int _numberOfHiddenSingles;
 
   void solveNakedSingles(SudokuGrid& sdkg);
-  void solveHiddenSingles(SudokuGrid& sdkg);
-  void solveHiddenSinglesPerGroup(SudokuGrid::set_t* group[]);
-
+  void solveHiddenSingle(SudokuGrid& sdkg);
   /// Brute force solving
   void solveByRecursion(SudokuGrid& sdkg);
 };

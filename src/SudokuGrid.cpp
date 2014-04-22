@@ -267,7 +267,7 @@ bool SudokuGrid::add(const value_t value, int row, int column)
     //cout << "-- Add: " << Value << " in [" << Row << "][" << Column << "]" << endl;
     if (isAnElementOf(value, _columnSet[column])
         && isAnElementOf(value, _rowSet[row])
-        && isAnElementOf(value, _blockSet[row / SudokuGrid::ORDER][column / SudokuGrid::ORDER]))
+        && isAnElementOf(value, _blockSet[row / SudokuGrid::ORDER][column / SudokuGrid:git satu:ORDER]))
     {
       _columnSet[column].erase(value);
       _rowSet[row].erase(value);
@@ -280,7 +280,7 @@ bool SudokuGrid::add(const value_t value, int row, int column)
     else
     {
       throw std::logic_error("-- Sudoku elements must be in the range "
-                             "[0," + to_string(SudokuGrid::ORDER2) + "]");
+                             "[1," + to_string(SudokuGrid::ORDER2) + "]");
     }
   }
   else
@@ -289,7 +289,7 @@ bool SudokuGrid::add(const value_t value, int row, int column)
     {
       throw std::logic_error("-- Sudoku element: " +
                              to_string(value) + " must be in the range "
-                             "[0," + to_string(SudokuGrid::ORDER2) + "]");
+                             "[1," + to_string(SudokuGrid::ORDER2) + "]");
     }
     _cell[row][column] = 0;
     isAdded = true;
