@@ -31,8 +31,9 @@ const std::vector<SudokuGrid>& SudokuSolver::solve()
   return _solutions;
 }
 
-void SudokuSolver::solveNakedSingles(SudokuGrid& sdkg)
+bool SudokuSolver::solveNakedSingles(SudokuGrid& sdkg)
 {
+  bool newNakedSingles {false};
   sdkg.calculateAllCellCandidates();
   for (int row = 0;
        (row < SudokuGrid::ORDER2)
@@ -51,6 +52,7 @@ void SudokuSolver::solveNakedSingles(SudokuGrid& sdkg)
         // Check single candidate status
         if (sizeOf(sdkg.getCellCandidates(row, col)) == 1)
         {
+          newNakedSingles = true;
           ++_numberOfNakedSingles;
           sdkg.unsafeAdd(*begin(sdkg.getCellCandidates(row, col)),
                          row, col);
@@ -66,18 +68,18 @@ void SudokuSolver::solveNakedSingles(SudokuGrid& sdkg)
   {
     ++_numberOfNotSolvables;
   }
+  return newNakedSingles;
 }
 
-void SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
+bool SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
 {
   //cout << endl << "----- Solve 'hidden singles': \n\n" << sdkg <<  endl;
   sdkg.calculateAllCellCandidates();
-  cout << "HS" << endl;
   array<size_t, SudokuGrid::ORDER2> countCandidates {{}};
   int stack {0};
-  bool solved {false};
+  bool newHiddenSingle {false};
 
-  while (!solved && stack < SudokuGrid::ORDER)
+  while (!newHiddenSingle && stack < SudokuGrid::ORDER)
   {
     SudokuGrid::set_t result;
     for (int col = stack * SudokuGrid::ORDER; col < (stack + 1) * SudokuGrid::ORDER; ++col)
@@ -93,13 +95,13 @@ void SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
                       [](size_t e) { return e == 1; });
     if (pv != end(countCandidates))
     {
-      solved = true;
+      newHiddenSingle = true;
       ++_numberOfHiddenSingles;
       cout << "Stack = " << stack << " Hidden single found: ";
       SudokuGrid::value_t candidateValue = 1 + pv - begin(countCandidates);
       cout << candidateValue << endl;
       writeCandidates(cout, sdkg);
-      getchar();
+      //getchar();
 
       bool found {false};
       for (int col = stack * SudokuGrid::ORDER;
@@ -114,20 +116,27 @@ void SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
             sdkg.calculateAllCellCandidates();
             found = true;
             writeCandidates(cout, sdkg);
-            getchar();
+            //getchar();
           }
         }
       }
     }
     ++stack;
   }
+  return newHiddenSingle;
 }
 
 void SudokuSolver::solveByRecursion(SudokuGrid& sdkg)
 {
-  //cout << "---- Solve by recursion:" << endl << endl;
-  solveNakedSingles(sdkg);
-  solveHiddenSingle(sdkg);
+  bool newNakedSingles {false};
+  bool newHiddenSingle {false};
+
+  do
+  {
+    newNakedSingles = solveNakedSingles(sdkg);
+    newHiddenSingle = solveHiddenSingle(sdkg);
+  } while (newNakedSingles || newHiddenSingle);
+
   if (!sdkg.isSolvable())
   {
     return;
@@ -190,6 +199,7 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg)
         int n = 0;
         while (it != C.end() && !(_wellformed && !_solutions.empty()))
         {
+          cout << "R" << endl;
           if (nextSdkg[n].add(*it, row, column))
           {
             solveByRecursion(nextSdkg[n]);

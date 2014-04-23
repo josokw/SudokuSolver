@@ -23,8 +23,8 @@ private:
   int _numberOfNakedSingles;
   int _numberOfHiddenSingles;
 
-  void solveNakedSingles(SudokuGrid& sdkg);
-  void solveHiddenSingle(SudokuGrid& sdkg);
+  bool solveNakedSingles(SudokuGrid& sdkg);
+  bool solveHiddenSingle(SudokuGrid& sdkg);
   /// Brute force solving
   void solveByRecursion(SudokuGrid& sdkg);
 };
