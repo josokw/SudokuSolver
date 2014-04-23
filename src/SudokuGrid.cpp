@@ -267,7 +267,7 @@ bool SudokuGrid::add(const value_t value, int row, int column)
     //cout << "-- Add: " << Value << " in [" << Row << "][" << Column << "]" << endl;
     if (isAnElementOf(value, _columnSet[column])
         && isAnElementOf(value, _rowSet[row])
-        && isAnElementOf(value, _blockSet[row / SudokuGrid::ORDER][column / SudokuGrid:git satu:ORDER]))
+        && isAnElementOf(value, _blockSet[row / SudokuGrid::ORDER][column / SudokuGrid::ORDER]))
     {
       _columnSet[column].erase(value);
       _rowSet[row].erase(value);
