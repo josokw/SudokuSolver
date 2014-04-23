@@ -279,8 +279,8 @@ bool SudokuGrid::add(const value_t value, int row, int column)
     }
     else
     {
-      throw std::logic_error("-- Sudoku elements must be in the range "
-                             "[1," + to_string(SudokuGrid::ORDER2) + "]");
+      throw std::logic_error("-- Sudoku element: " +
+                             to_string(value) + " not in groups");
     }
   }
   else
