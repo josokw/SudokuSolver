@@ -19,10 +19,7 @@ const string vert(11, '|');
 }
 
 const SudokuGrid::set_t SudokuGrid::EMPTY;
-const SudokuGrid::set_t SudokuGrid::U
-{
-  makeRange(1, SudokuGrid::ORDER2 + 1)
-};
+const SudokuGrid::set_t SudokuGrid::U {makeRange<SudokuGrid::value_t>(1, SudokuGrid::ORDER2 + 1)};
 
 ostream& operator<<(ostream& os, const SudokuGrid& sdkg)
 {

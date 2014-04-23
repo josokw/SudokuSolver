@@ -111,17 +111,6 @@ private:
   /// The sets U, ColumnSet, RowSet and BlockSet must be up to date.
   /// Sets IsSolveable status.
   SudokuGrid::set_t calculateCellCandidates(int row, int column) const;
-
-  /// Generates a set containing [b..e)
-  static set_t makeRange(int b, int e)
-  {
-    set_t result;
-    for (int i = b; i < e; ++i)
-    {
-      result.insert(i);
-    }
-    return result;
-  }
 };
 
 #endif

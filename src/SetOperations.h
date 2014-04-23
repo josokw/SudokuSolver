@@ -114,6 +114,18 @@ int sizeOf(const std::set<T>& set)
   return set.size();
 }
 
+/// Generates a set containing [b..e)
+template<typename T>
+std::set<T> makeRange(T b, T e)
+{
+  std::set<T> result;
+  for (auto i = b; i < e; ++i)
+  {
+    result.insert(i);
+  }
+  return result;
+}
+
 #endif
 
 //------------------------------------------------------------ eof SetOperations
