@@ -1,4 +1,4 @@
-CXX = clang++ 
+CXX = g++ 
 CXXFLAGS = -std=c++11 -Wall -Wextra -Weffc++ -O3
 
 EXECUTABLE = sudoku
