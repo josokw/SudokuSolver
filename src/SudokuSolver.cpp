@@ -60,9 +60,7 @@ SudokuSolver::SudokuSolver(const SudokuGrid& initialSdkg, int nMaxSolutions)
 const std::vector<SudokuGrid>& SudokuSolver::solve()
 {
   _solutions.clear();
-  cout << _sdkg << endl;
   solveByRecursion(_sdkg);
-
   return _solutions;
 }
 
