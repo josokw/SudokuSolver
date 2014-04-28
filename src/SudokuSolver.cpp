@@ -216,7 +216,7 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
 
             int n = 0;
             while (it != C.end()
-                   && _solutions.size() < _nMaxSolutions)
+                   && _solutions.size() < size_t(_nMaxSolutions))
             {
                if (nextSdkg[n].add(*it, row, column))
                {
