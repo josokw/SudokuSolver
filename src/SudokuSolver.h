@@ -23,7 +23,7 @@ private:
   int _numberOfNakedSingles;
   int _numberOfHiddenSingles;
 
-  void solveNakedSingles(SudokuGrid& sdkg);
+  bool solveNakedSingles(SudokuGrid& sdkg);
   void solveHiddenSingles(SudokuGrid& sdkg);
   void solveHiddenSinglesPerGroup(SudokuGrid::set_t* group[]);
 
