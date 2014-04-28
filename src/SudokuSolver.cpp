@@ -52,6 +52,7 @@ SudokuSolver::SudokuSolver(const SudokuGrid& initialSdkg, int nMaxSolutions)
   ,  _nMaxSolutions(nMaxSolutions)
   ,  _solutions()
   ,  _numberOfNotSolvables(0)
+  ,  _maxRecursionDepth(0)
   ,  _numberOfNakedSingles(0)
   ,  _numberOfHiddenSingles(0)
 { }
@@ -151,6 +152,7 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
   bool newNakedSingles {false};
   bool newHiddenSingle {false};
 
+  _maxRecursionDepth = max(_maxRecursionDepth, level);
   do
   {
     newNakedSingles = solveNakedSingles(sdkg);
@@ -172,6 +174,8 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
          << _solutions.size() << endl;
     cout << "---- Number of encountered not solvables:  "
          << _numberOfNotSolvables << endl;
+    cout << "---- Maximum recursion depth:              "
+         << _maxRecursionDepth << endl;
     cout << "---- Number of encountered naked singles:  "
          << _numberOfNakedSingles << endl;
     cout << "---- Number of encountered hidden singles: "

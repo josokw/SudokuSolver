@@ -20,6 +20,7 @@ private:
   int _nMaxSolutions;
   std::vector<SudokuGrid> _solutions;
   int _numberOfNotSolvables;
+  int _maxRecursionDepth;
   int _numberOfNakedSingles;
   int _numberOfHiddenSingles;
 
