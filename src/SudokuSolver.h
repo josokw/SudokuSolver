@@ -4,20 +4,20 @@
 #define SUDOKUSOLVER_H
 
 #include <vector>
-#include <ctime>
 
 #include "SudokuGrid.h"
 
 class SudokuSolver
 {
 public:
-  SudokuSolver(const SudokuGrid& initialSdkg, bool wellformed);
+  SudokuSolver(const SudokuGrid& initialSdkg, int nMaxSolutions = 1);
+  virtual ~SudokuSolver() = default;
 
   const std::vector<SudokuGrid>& solve();
 
 private:
   SudokuGrid _sdkg;
-  bool _wellformed;
+  int _nMaxSolutions;
   std::vector<SudokuGrid> _solutions;
   int _numberOfNotSolvables;
   int _numberOfNakedSingles;
@@ -28,7 +28,7 @@ private:
   void solveHiddenSinglesPerGroup(SudokuGrid::set_t* group[]);
 
   /// Brute force solving
-  void solveByRecursion(SudokuGrid& sdkg);
+  void solveByRecursion(SudokuGrid& sdkg, int level = 0);
 };
 
 #endif

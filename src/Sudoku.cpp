@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
         vector<SudokuGrid> solutions(5);
 
         Input >> sdkg;
+        cout << "- Number of clues: " << sdkg.getNumberOfCellsSolved() << endl;
         SudokuSolver sdkSolver(sdkg, 1);
 
         auto t1 = chrono::system_clock::now();
@@ -64,7 +65,7 @@ int main(int argc, char *argv[])
       }
       catch(const exception& e)
       {
-        clog << "- EXCEPTION: " << argv[0] << " " << e.what() << endl;
+        clog << "- EXCEPTION " << argv[0] << ": " << e.what() << endl;
       }
       catch(...)
       {

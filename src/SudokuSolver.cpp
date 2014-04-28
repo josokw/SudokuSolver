@@ -47,9 +47,10 @@ struct IsUnique
    }
 };
 
-SudokuSolver::SudokuSolver(const SudokuGrid& initialSdkg, bool wellformed)
+SudokuSolver::SudokuSolver(const SudokuGrid& initialSdkg, int nMaxSolutions)
    :  _sdkg(initialSdkg)
-   ,  _wellformed(wellformed)
+   ,  _nMaxSolutions(nMaxSolutions)
+   ,  _solutions()
    ,  _numberOfNotSolvables(0)
    ,  _numberOfNakedSingles(0)
    ,  _numberOfHiddenSingles(0)
@@ -148,7 +149,7 @@ void SudokuSolver::solveHiddenSinglesPerGroup(SudokuGrid::set_t* group[])
    }
 }
 
-void SudokuSolver::solveByRecursion(SudokuGrid& sdkg)
+void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
 {
    //cout << "---- Solve by recursion:" << endl << endl;
    solveNakedSingles(sdkg);
@@ -160,6 +161,8 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg)
    if (sdkg.isSolved())
    {
       _solutions.push_back(sdkg);
+      cout << "---- Number of solutions:                  "
+        << _solutions.size() << endl;
       cout << "---- Number of encountered not solvables:  "
            << _numberOfNotSolvables << endl;
       cout << "---- Number of encountered naked singles:  "
@@ -207,20 +210,17 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg)
             // Solve Sdkg further
             if (sdkg.add(*it, row, column))
             {
-               solveByRecursion(sdkg);
+               solveByRecursion(sdkg, level + 1);
             }
             ++it;
 
             int n = 0;
-            while (it != C.end() && !(_wellformed && !_solutions.empty()))
+            while (it != C.end()
+                   && _solutions.size() < _nMaxSolutions)
             {
                if (nextSdkg[n].add(*it, row, column))
                {
-                  solveByRecursion(nextSdkg[n]);
-               }
-               else
-               {
-                  cout << "$$#@$#%&^%^&^%%$$" << endl;
+                  solveByRecursion(nextSdkg[n], level + 1);
                }
                ++it;
                ++n;
