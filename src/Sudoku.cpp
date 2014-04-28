@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
         vector<SudokuGrid> solutions;
 
         Input >> sdkg;
+        cout << "- Number of clues: " << sdkg.getNumberOfCellsSolved() << endl;
         writeCandidates(cout, sdkg);
         getchar();
         SudokuSolver sdkSolver(sdkg, 1);
