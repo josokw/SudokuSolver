@@ -57,9 +57,9 @@ int main(int argc, char *argv[])
              << d.count() << " sec" << endl << endl;
         cout << "---- Sudoku solution(s), " << solutions.size()
              << " found:\n\n";
-        for (auto solution: solutions)
+        for (auto& solution: solutions)
         {
-          cout << solution << endl;
+          cout << endl << solution << endl;
         }
         cout << "- Sudoku solver, solved puzzle: " << fileName << endl << endl;
       }

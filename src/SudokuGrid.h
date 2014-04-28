@@ -48,7 +48,7 @@ public:
 
   /// Adds an allowed solution for a certain cell to Cell.
   /// Increments _numberOfCellsSolved.
-  bool add(const value_t value, int row, int column);
+  void add(const value_t value, int row, int column);
   /// Adds a solution for a certain cell to Cell.
   void unsafeAdd(const value_t value, int row, int column);
   /// Calculates all candidate solutions for every cell not yet solved.
@@ -95,6 +95,7 @@ private:
   std::array<set_t, ORDER2> _columnSet;
   std::array<set_t, ORDER2> _rowSet;
   std::array<std::array<set_t, ORDER>, ORDER> _blockSet;
+public:
   /// Contains for every cell not yet solved, the set of candidate solutions.
   std::array<std::array<set_t, ORDER2>, ORDER2> _candidates;
 

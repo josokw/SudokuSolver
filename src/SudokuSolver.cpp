@@ -87,7 +87,7 @@ void SudokuSolver::solveNakedSingles(SudokuGrid& sdkg)
             if (sizeOf(sdkg.getCellCandidates(row, col)) == 1)
             {
                ++_numberOfNakedSingles;
-               sdkg.unsafeAdd(*sdkg.getCellCandidates(row, col).begin(),
+               sdkg.add(*sdkg.getCellCandidates(row, col).begin(),
                               row, col);
                sdkg.calculateAllCellCandidates();
                row = 0;
@@ -161,6 +161,7 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
    if (sdkg.isSolved())
    {
       _solutions.push_back(sdkg);
+      cout << endl;
       cout << "---- Number of solutions:                  "
         << _solutions.size() << endl;
       cout << "---- Number of encountered not solvables:  "
@@ -208,20 +209,16 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
             }
             auto it = C.begin();
             // Solve Sdkg further
-            if (sdkg.add(*it, row, column))
-            {
-               solveByRecursion(sdkg, level + 1);
-            }
+            sdkg.add(*it, row, column);
+            solveByRecursion(sdkg, level + 1);
             ++it;
 
             int n = 0;
             while (it != C.end()
                    && _solutions.size() < size_t(_nMaxSolutions))
             {
-               if (nextSdkg[n].add(*it, row, column))
-               {
-                  solveByRecursion(nextSdkg[n], level + 1);
-               }
+               nextSdkg[n].add(*it, row, column);
+               solveByRecursion(nextSdkg[n], level + 1);
                ++it;
                ++n;
             }
