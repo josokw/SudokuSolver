@@ -167,7 +167,6 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
   if (sdkg.isSolved())
   {
     _solutions.push_back(sdkg);
-    cout << endl;
     cout << "---- Number of solutions:                  "
          << _solutions.size() << endl;
     cout << "---- Number of encountered not solvables:  "
