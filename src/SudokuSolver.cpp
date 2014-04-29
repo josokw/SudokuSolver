@@ -108,6 +108,7 @@ bool SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
   {
     array<size_t, SudokuGrid::ORDER2> countCandidates {{}};
     int stack {0};
+    int band {0};
 
     while (!newHiddenSingle && stack < SudokuGrid::ORDER)
     {
@@ -155,6 +156,53 @@ bool SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
         }
       }
       ++stack;
+    }
+    while (!newHiddenSingle && band < SudokuGrid::ORDER)
+    {
+      SudokuGrid::set_t result;
+      for (int row = band * SudokuGrid::ORDER;
+           row < (band+ 1) * SudokuGrid::ORDER;
+           ++row)
+      {
+        for (int col = 0; col < SudokuGrid::ORDER2; ++col)
+        {
+          SudokuGrid::set_t candidates {*sdkg.pRow[col][row]};
+          for_each(begin(candidates), end(candidates),
+                   [&countCandidates](SudokuGrid::value_t val)
+                   { ++countCandidates[val - 1]; });
+        }
+      }
+      auto pv = find_if(begin(countCandidates), end(countCandidates),
+                        [](size_t e) { return e == 1; });
+      if (pv != end(countCandidates))
+      {
+        newHiddenSingle = true;
+        ++_numberOfHiddenSingles;
+        //cout << "Stack = " << stack << " Hidden single found: ";
+        SudokuGrid::value_t candidateValue = 1 + pv - begin(countCandidates);
+        //cout << candidateValue << " in " << sdkg.getID() << endl;
+        //writeCandidates(cout, sdkg);
+        //getchar();
+
+        bool found {false};
+        for (int row = band * SudokuGrid::ORDER;
+             !found && row < (band + 1) * SudokuGrid::ORDER; ++row)
+        {
+          for (int col = 0; !found && col < SudokuGrid::ORDER2; ++col)
+          {
+            if (isAnElementOf(candidateValue, sdkg.getCellCandidates(row, col)))
+            {
+              sdkg.add(candidateValue, row, col);
+              sdkg.calculateAllCellCandidates();
+              found = true;
+              cout << "Solved HS band" << endl;
+              //writeCandidates(cout, sdkg);
+              //getchar();
+            }
+          }
+        }
+      }
+      ++band;
     }
   }
   return newHiddenSingle;
