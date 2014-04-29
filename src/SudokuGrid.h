@@ -46,6 +46,8 @@ public:
   SudokuGrid(const SudokuGrid& sdkg);
   SudokuGrid& operator=(const SudokuGrid& sdkg);
 
+  void setID(const std::string& id) { _id = id; }
+  const std::string& getID() const { return _id; }
   /// Adds an allowed solution for a certain cell to Cell.
   /// Increments _numberOfCellsSolved.
   void add(const value_t value, int row, int column);
@@ -85,6 +87,7 @@ private:
   static const set_t EMPTY;
   /// Set U: Universe, this set contains all allowed cell values (solutions).
   static const set_t U;
+  std::string _id;
   /// Number of cells solved.
   int _numberOfCellsSolved;
   bool _isSolvable;

@@ -1,20 +1,18 @@
-//----------------------------------------------------------------------------------- SudokuSolver.h
+//--------------------------------------------------------------- SudokuSolver.h
 
 #ifndef SUDOKUSOLVER_H
 #define SUDOKUSOLVER_H
 
-#include <vector>
-
 #include "SudokuGrid.h"
+
+#include <vector>
 
 class SudokuSolver
 {
 public:
   SudokuSolver(const SudokuGrid& initialSdkg, int nMaxSolutions = 1);
   virtual ~SudokuSolver() = default;
-
   const std::vector<SudokuGrid>& solve();
-
 private:
   SudokuGrid _sdkg;
   int _nMaxSolutions;
@@ -25,14 +23,13 @@ private:
   int _numberOfHiddenSingles;
 
   bool solveNakedSingles(SudokuGrid& sdkg);
+  bool solveHiddenSingle(SudokuGrid& sdkg);
   void solveHiddenSingles(SudokuGrid& sdkg);
   void solveHiddenSinglesPerGroup(SudokuGrid::set_t* group[]);
-
   /// Brute force solving
   void solveByRecursion(SudokuGrid& sdkg, int level = 0);
 };
 
 #endif
 
-//------------------------------------------------------------------------------- eof SudokuSolver.h
-
+//----------------------------------------------------------- eof SudokuSolver.h

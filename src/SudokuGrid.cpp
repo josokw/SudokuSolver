@@ -30,6 +30,7 @@ const SudokuGrid::set_t SudokuGrid::U
 
 ostream& operator<<(ostream& os, const SudokuGrid& sdkg)
 {
+  os << "- " << sdkg.getID() << endl;
   for (int row = 0; row < SudokuGrid::ORDER2; ++row)
   {
     for (int col = 0; col < SudokuGrid::ORDER2; ++col)
@@ -89,7 +90,7 @@ void writeCandidates(std::ostream& os, const SudokuGrid& sdkg)
         os << horz;
         if (row == 0)
         {
-          os << " ID = " << &sdkg
+          os << " ID = " << &sdkg << " " << sdkg.getID() << " "
              << (sdkg.isSolvable() ? "" : " not solvable");
         }
         os << endl << horz2 << endl;
@@ -204,13 +205,14 @@ void writeLatex(std::ostream& os, const SudokuGrid& sdkg)
 }
 
 SudokuGrid::SudokuGrid()
-  : _numberOfCellsSolved {0}
-, _isSolvable {true}
-, _cell {{}}
-, _columnSet {{}}
-, _rowSet {{}}
-, _blockSet {{}}
-, _candidates {{}}
+  : _id {}
+  ,  _numberOfCellsSolved {0}
+  , _isSolvable {true}
+  , _cell {{}}
+  , _columnSet {{}}
+  , _rowSet {{}}
+  , _blockSet {{}}
+  , _candidates {{}}
 {
   for (int row = 0; row < SudokuGrid::ORDER2; ++row)
   {
@@ -240,6 +242,7 @@ SudokuGrid::SudokuGrid(const SudokuGrid& sdkg)
 ,  _blockSet {{}}
 ,  _candidates {{}}
 {
+  _id = sdkg._id;
   _cell = sdkg._cell;
   _columnSet = sdkg._columnSet;
   _rowSet = sdkg._rowSet;
@@ -255,6 +258,7 @@ SudokuGrid& SudokuGrid::operator=(const SudokuGrid& sdkg)
 {
   if (this != &sdkg)
   {
+    _id = sdkg._id;
     _numberOfCellsSolved = sdkg._numberOfCellsSolved;
     _isSolvable = sdkg._isSolvable;
     _cell = sdkg._cell;
@@ -309,7 +313,7 @@ void SudokuGrid::add(const value_t value, int row, int column)
   }
   else
   {
-    cout << "ADD to no solvable" << endl;
+    cout << "ADD to not solvable sudoku grid " << getID() << endl;
   }
 }
 
