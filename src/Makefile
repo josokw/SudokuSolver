@@ -1,4 +1,4 @@
-CXX = g++ 
+CXX = clang++
 CXXFLAGS = -std=c++11 -Wall -Wextra -Weffc++ -O3
 
 EXECUTABLE = sudoku
@@ -23,8 +23,8 @@ depend: $(SOURCES)
 clean:
 	$(RM) $(EXECUTABLE) $(OBJECTS)
 
-# Clean up dependency file  
+# Clean up dependency file
 .PHONY: clean-depend
 clean-depend: clean
-	$(RM) depend  
-	                                              
+	$(RM) depend
+
