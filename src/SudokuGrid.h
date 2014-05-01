@@ -46,9 +46,11 @@ public:
   SudokuGrid(const SudokuGrid& sdkg);
   SudokuGrid& operator=(const SudokuGrid& sdkg);
 
+  void setID(const std::string& id) { _id = id; }
+  const std::string& getID() const { return _id; }
   /// Adds an allowed solution for a certain cell to Cell.
   /// Increments _numberOfCellsSolved.
-  bool add(const value_t value, int row, int column);
+  void add(const value_t value, int row, int column);
   /// Adds a solution for a certain cell to Cell.
   void unsafeAdd(const value_t value, int row, int column);
   /// Calculates all candidate solutions for every cell not yet solved.
@@ -85,6 +87,7 @@ private:
   static const set_t EMPTY;
   /// Set U: Universe, this set contains all allowed cell values (solutions).
   static const set_t U;
+  std::string _id;
   /// Number of cells solved.
   int _numberOfCellsSolved;
   bool _isSolvable;
@@ -95,6 +98,7 @@ private:
   std::array<set_t, ORDER2> _columnSet;
   std::array<set_t, ORDER2> _rowSet;
   std::array<std::array<set_t, ORDER>, ORDER> _blockSet;
+public:
   /// Contains for every cell not yet solved, the set of candidate solutions.
   std::array<std::array<set_t, ORDER2>, ORDER2> _candidates;
 

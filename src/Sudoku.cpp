@@ -44,13 +44,12 @@ int main(int argc, char *argv[])
         cout << "---- Sudoku file: " << fileName << "\n\n";
 
         SudokuGrid sdkg;
-        vector<SudokuGrid> solutions;
+        vector<SudokuGrid> solutions(5);
 
         Input >> sdkg;
         cout << "- Number of clues: " << sdkg.getNumberOfCellsSolved() << endl;
-        writeCandidates(cout, sdkg);
-        getchar();
-        SudokuSolver sdkSolver(sdkg, 1);
+        cout << endl << sdkg << endl;
+        SudokuSolver sdkSolver(sdkg);
 
         auto t1 = chrono::system_clock::now();
         solutions = sdkSolver.solve();
@@ -58,16 +57,16 @@ int main(int argc, char *argv[])
         cout << "---- Processing time: " << fixed << setprecision(4)
              << d.count() << " sec" << endl << endl;
         cout << "---- Sudoku solution(s), " << solutions.size()
-             << " found:\n\n";
-        for (auto solution: solutions)
+             << " found:\n";
+        for (const auto& solution: solutions)
         {
-          cout << solution << endl;
+          cout << endl << solution << endl;
         }
         cout << "- Sudoku solver, solved puzzle: " << fileName << endl << endl;
       }
       catch(const exception& e)
       {
-        clog << "- EXCEPTION: " << argv[0] << " " << e.what() << endl;
+        clog << "- EXCEPTION " << argv[0] << ": " << e.what() << endl;
       }
       catch(...)
       {
