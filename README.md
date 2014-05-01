@@ -12,7 +12,7 @@ Goal: solve Sudoku puzzles using set operations.
 
 Solving strategies:
 - Naked singles
-- Hidden singles (buggy)
+- Hidden singles
 - Brute force recursive
 
 Input format
