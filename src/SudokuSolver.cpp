@@ -3,7 +3,6 @@
 #include "SetOperations.h"
 #include "SudokuGrid.h"
 #include "SudokuSolver.h"
-
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -12,40 +11,6 @@
 #include <iomanip>
 
 using namespace std;
-
-static bool isNotSolved(SudokuGrid::set_t* pSet)
-{
-  return (pSet->size() > 1);
-}
-
-struct IsUnique
-{
-  size_t* pCount;
-
-  IsUnique(size_t* pCount_)
-    : pCount(pCount_)
-  {
-    fill(pCount, pCount + SudokuGrid::ORDER2, 0);
-  }
-
-  void operator()(SudokuGrid::set_t* pSet)
-  {
-    if (isNotSolved(pSet))
-    {
-      auto it = (*pSet).begin();
-      while (it != (*pSet).end())
-      {
-        ++(pCount[*it]);
-        ++it;
-      }
-    }
-  }
-
-  size_t* UniqueIndex()
-  {
-    return find(pCount, pCount + SudokuGrid::ORDER2, 1);
-  }
-};
 
 SudokuSolver::SudokuSolver(const SudokuGrid& initialSdkg, int nMaxSolutions)
   :  _sdkg(initialSdkg)
@@ -88,8 +53,7 @@ bool SudokuSolver::solveNakedSingles(SudokuGrid& sdkg)
         {
           newNakedSingles = true;
           ++_numberOfNakedSingles;
-          sdkg.add(*begin(sdkg.getCellCandidates(row, col)),
-                   row, col);
+          sdkg.add(*begin(sdkg.getCellCandidates(row, col)),row, col);
           sdkg.calculateAllCellCandidates();
           row = 0;
           col = 0;
@@ -208,52 +172,6 @@ bool SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
   return newHiddenSingle;
 }
 
-void SudokuSolver::solveHiddenSingles(SudokuGrid& sdkg)
-{
-  //cout << endl << "----- Solve 'hidden singles': \n\n" << Sdkg <<  endl;
-
-  for (int index = 0; index < SudokuGrid::ORDER2; ++index)
-  {
-    solveHiddenSinglesPerGroup(sdkg.pRow[index]);
-    solveNakedSingles(sdkg);
-  }
-  for (int index = 0; index < SudokuGrid::ORDER2; ++index)
-  {
-    solveHiddenSinglesPerGroup(sdkg.pColumn[index]);
-    solveNakedSingles(sdkg);
-  }
-  for (int index = 0; index < SudokuGrid::ORDER2; ++index)
-  {
-    solveHiddenSinglesPerGroup(sdkg.pBlock[index]);
-    solveNakedSingles(sdkg);
-  }
-}
-
-void SudokuSolver::solveHiddenSinglesPerGroup(SudokuGrid::set_t* group[])
-{
-  size_t count[SudokuGrid::ORDER2];
-  IsUnique isUnique(count);
-
-  for_each(group, group + SudokuGrid::ORDER2, isUnique);
-  SudokuGrid::value_t value = *isUnique.UniqueIndex();
-
-  bool ready = false;
-  SudokuGrid::set_t** ppSet = group;
-  while (ppSet != group + SudokuGrid::ORDER2)
-  {
-    ready = isAnElementOf(value, **ppSet);
-    if (ready)
-    {
-      ++_numberOfHiddenSingles;
-      //cout << "Hidden single: " << Value << endl;
-      (*ppSet)->clear();
-      (*ppSet)->insert(value);
-      ready = true;
-    }
-    ++ppSet;
-  }
-}
-
 void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
 {
   bool newNakedSingles {false};
@@ -324,7 +242,6 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
           nextSdkg.push_back(sdkg);
         }
         auto it = begin(C);
-        // Solve Sdkg further
         sdkg.setID(sdkg.getID() + ".1");
         sdkg.add(*it, row, column);
         solveByRecursion(sdkg, level + 1);

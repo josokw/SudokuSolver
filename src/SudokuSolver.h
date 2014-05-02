@@ -4,7 +4,6 @@
 #define SUDOKUSOLVER_H
 
 #include "SudokuGrid.h"
-
 #include <vector>
 
 class SudokuSolver
@@ -24,8 +23,6 @@ private:
 
   bool solveNakedSingles(SudokuGrid& sdkg);
   bool solveHiddenSingle(SudokuGrid& sdkg);
-  void solveHiddenSingles(SudokuGrid& sdkg);
-  void solveHiddenSinglesPerGroup(SudokuGrid::set_t* group[]);
   /// Brute force solving
   void solveByRecursion(SudokuGrid& sdkg, int level = 0);
 };
