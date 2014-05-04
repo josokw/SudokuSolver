@@ -13,12 +13,8 @@ namespace
 {
 const string subhorz(13, '-');
 const string subhorz2(13, ' ');
-const string horz
-{"+" + subhorz + "+" + subhorz + "+" + subhorz + "+"
-};
-const string horz2
-{"|" + subhorz2 + "|" + subhorz2 + "|" + subhorz2 + "|"
-};
+const string horz = "+" + subhorz + "+" + subhorz + "+" + subhorz + "+";
+const string horz2 = "|" + subhorz2 + "|" + subhorz2 + "|" + subhorz2 + "|";
 const string vert(11, '|');
 }
 
@@ -291,12 +287,12 @@ void SudokuGrid::add(const value_t value, int row, int column)
       }
       else
       {
-        cout << "ADD ERROR" << endl;
-        writeCandidates(cout, *this);
-        getchar();
-//        throw std::logic_error("-- [" + to_string(row) + "][" + to_string(column) +
-//                               "] Sudoku element: " +
-//                               to_string(value) + " not in groups");
+        //cout << "ADD ERROR" << endl;
+        //writeCandidates(cout, *this);
+        //getchar();
+        throw std::logic_error("-- [" + to_string(row) + "][" + to_string(column) +
+                               "] Sudoku element: " +
+                               to_string(value) + " not in groups");
       }
     }
     else
@@ -368,7 +364,6 @@ void SudokuGrid::mapPointerArraysToCandidates()
       pColumn[i][j] = &_candidates[j][i];
     }
   }
-
   for (int blockIndex = 0; blockIndex < SudokuGrid::ORDER2; ++blockIndex)
   {
     int index = 0;

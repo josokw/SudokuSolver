@@ -20,9 +20,11 @@ private:
   int _maxRecursionDepth;
   int _numberOfNakedSingles;
   int _numberOfHiddenSingles;
+  int _numberOfNakedPairs;
 
   bool solveNakedSingles(SudokuGrid& sdkg);
   bool solveHiddenSingle(SudokuGrid& sdkg);
+  bool solveNakedPair(SudokuGrid& sdkg);
   /// Brute force solving
   void solveByRecursion(SudokuGrid& sdkg, int level = 0);
 };

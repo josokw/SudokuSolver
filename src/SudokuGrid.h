@@ -83,12 +83,11 @@ public:
   }
 
 private:
-  /// Set EMPTY, empty set.
+  /// Set EMPTY: empty set.
   static const set_t EMPTY;
-  /// Set U: Universe, this set contains all allowed cell values (solutions).
+  /// Set U: Universe, this set contains all allowed cell values.
   static const set_t U;
   std::string _id;
-  /// Number of cells solved.
   int _numberOfCellsSolved;
   bool _isSolvable;
   /// Contains for every cell the solution, if the contained value equals 0
@@ -101,13 +100,10 @@ private:
 public:
   /// Contains for every cell not yet solved, the set of candidate solutions.
   std::array<std::array<set_t, ORDER2>, ORDER2> _candidates;
-
-public:
   /// Group arrays of pointers to Candidates
-  set_t* pRow[ORDER2][ORDER2];
-  set_t* pColumn[ORDER2][ORDER2];
-  set_t* pBlock[ORDER2][ORDER2];
-
+  std::array<std::array<set_t*, ORDER2>, ORDER2> pRow;
+  std::array<std::array<set_t*, ORDER2>, ORDER2> pColumn;
+  std::array<std::array<set_t*, ORDER2>, ORDER2> pBlock;
 private:
   /// Populate arrays of pointers
   void mapPointerArraysToCandidates();

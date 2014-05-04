@@ -109,6 +109,13 @@ bool isAnElementOf(const T& element, const std::set<T>& set)
 
 template<typename T>
 inline
+void removeElements(const std::set<T>& tobeRemoved, std::set<T>& set)
+{
+  set = set - tobeRemoved;
+}
+
+template<typename T>
+inline
 int sizeOf(const std::set<T>& set)
 {
   return set.size();

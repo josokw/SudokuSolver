@@ -20,6 +20,7 @@ SudokuSolver::SudokuSolver(const SudokuGrid& initialSdkg, int nMaxSolutions)
   ,  _maxRecursionDepth(0)
   ,  _numberOfNakedSingles(0)
   ,  _numberOfHiddenSingles(0)
+  ,  _numberOfNakedPairs(0)
 { }
 
 const std::vector<SudokuGrid>& SudokuSolver::solve()
@@ -72,7 +73,6 @@ bool SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
   {
     array<size_t, SudokuGrid::ORDER2> countCandidates {{}};
     int stack {0};
-    int band {0};
 
     while (!newHiddenSingle && stack < SudokuGrid::ORDER)
     {
@@ -121,6 +121,7 @@ bool SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
       }
       ++stack;
     }
+    int band {0};
     while (!newHiddenSingle && band < SudokuGrid::ORDER)
     {
       SudokuGrid::set_t result;
@@ -159,7 +160,7 @@ bool SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
               sdkg.add(candidateValue, row, col);
               sdkg.calculateAllCellCandidates();
               found = true;
-              cout << "Solved HS band" << endl;
+              //cout << "Solved HS band" << endl;
               //writeCandidates(cout, sdkg);
               //getchar();
             }
@@ -172,19 +173,61 @@ bool SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
   return newHiddenSingle;
 }
 
+bool SudokuSolver::solveNakedPair(SudokuGrid& sdkg)
+{
+  bool newNakedPair {false};
+  SudokuGrid::set_t result;
+
+  if (sdkg.isSolvable())
+  {
+    SudokuGrid::set_t result;
+    for (int col = 0; col < SudokuGrid::ORDER2; ++col)
+    {
+      //for (int row = 0; row < SudokuGrid::ORDER2; ++row)
+      //{
+
+      auto startCol = sdkg.pColumn[col].cbegin();
+      auto endCol = sdkg.pColumn[col].cend();
+      while (startCol != endCol)
+      {
+        if ((*startCol)->size() == 2) break;
+        ++startCol;
+      }
+      auto pCol = startCol;
+      if (startCol != endCol) ++startCol;
+      while (startCol != endCol)
+      {
+        if (*startCol == *pCol) break;
+        ++startCol;
+        //find_if()
+      }
+      if (startCol != endCol)
+      {
+        result = **startCol;
+        cout << "Naked pair " << col << " " << result << endl;
+        writeCandidates(cout, sdkg);
+        getchar();
+        //newNakedPair = true;
+      }
+    }
+  }
+  return newNakedPair;
+}
+
 void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
 {
   bool newNakedSingles {false};
   bool newHiddenSingle {false};
+  bool newNakedPair {false};
 
   _maxRecursionDepth = max(_maxRecursionDepth, level);
   do
   {
     newNakedSingles = solveNakedSingles(sdkg);
     newHiddenSingle = solveHiddenSingle(sdkg);
-    //solveHiddenSingles(sdkg);
+    newNakedPair = solveNakedPair(sdkg);
   }
-  while (newNakedSingles || newHiddenSingle);
+  while (newNakedSingles || newHiddenSingle || newNakedPair);
 
   if (!sdkg.isSolvable())
   {
@@ -203,7 +246,9 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
     cout << "---- Number of encountered naked singles:  "
          << _numberOfNakedSingles << endl;
     cout << "---- Number of encountered hidden singles: "
-         << _numberOfHiddenSingles << endl << endl;
+         << _numberOfHiddenSingles << endl;
+    cout << "---- Number of encountered naked pairs:    "
+         << _numberOfNakedPairs << endl << endl;
   }
   else
   {
