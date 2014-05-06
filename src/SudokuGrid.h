@@ -48,6 +48,7 @@ public:
 
   void setID(const std::string& id) { _id = id; }
   const std::string& getID() const { return _id; }
+  bool removeCandidates(const set_t& rem, int row, int column);
   /// Adds an allowed solution for a certain cell to Cell.
   /// Increments _numberOfCellsSolved.
   void add(const value_t value, int row, int column);

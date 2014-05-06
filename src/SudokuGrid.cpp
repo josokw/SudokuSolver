@@ -267,6 +267,13 @@ SudokuGrid& SudokuGrid::operator=(const SudokuGrid& sdkg)
   return *this;
 }
 
+bool SudokuGrid::removeCandidates(const set_t& rem, int row, int column)
+{
+  set_t candidates {_candidates[row][column]};
+  _candidates[row][column] = _candidates[row][column] - rem;
+  return candidates != _candidates[row][column];
+}
+
 void SudokuGrid::add(const value_t value, int row, int column)
 {
   if (isSolvable())
@@ -356,12 +363,12 @@ SudokuGrid::set_t SudokuGrid::calculateCellCandidates(int row, int column) const
 
 void SudokuGrid::mapPointerArraysToCandidates()
 {
-  for (int i = 0; i < SudokuGrid::ORDER2; ++i)
+  for (int groupIndex = 0; groupIndex < SudokuGrid::ORDER2; ++groupIndex)
   {
-    for (int j = 0; j < SudokuGrid::ORDER2; ++j)
+    for (int index = 0; index < SudokuGrid::ORDER2; ++index)
     {
-      pRow[i][j] = &_candidates[i][j];
-      pColumn[i][j] = &_candidates[j][i];
+      pRow[groupIndex][index] = &_candidates[groupIndex][index];
+      pColumn[groupIndex][index] = &_candidates[index][groupIndex];
     }
   }
   for (int blockIndex = 0; blockIndex < SudokuGrid::ORDER2; ++blockIndex)
