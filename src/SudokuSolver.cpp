@@ -181,8 +181,8 @@ bool SudokuSolver::solveNakedPair(SudokuGrid& sdkg)
   bool newNakedPair {false};
   SudokuGrid::set_t result;
 
-  writeCandidates(cout, sdkg);
-  getchar();
+  //writeCandidates(cout, sdkg);
+  //getchar();
   if (sdkg.isSolvable())
   {
     SudokuGrid::set_t result;
@@ -211,7 +211,6 @@ bool SudokuSolver::solveNakedPair(SudokuGrid& sdkg)
       if (startIndex != endIndex)
       {
         result = **startIndex;
-        cout << "Naked pair Column " << groupIndex << " " << result << endl;
         //writeCandidates(cout, sdkg);
         for (int i = 0; i < SudokuGrid::ORDER2; ++i)
         {
@@ -220,6 +219,7 @@ bool SudokuSolver::solveNakedPair(SudokuGrid& sdkg)
             if (sdkg.removeCandidates(result, i, groupIndex))
             {
               newNakedPair = true;
+              cout << "Naked pair Column " << groupIndex << " " << result << endl;
             }
           }
         }
@@ -227,42 +227,85 @@ bool SudokuSolver::solveNakedPair(SudokuGrid& sdkg)
         //getchar();
       }
     }
-  }
-  if (!newNakedPair)
-  {
-    SudokuGrid::set_t result;
-    for (int groupIndex = 0; groupIndex < SudokuGrid::ORDER2; ++groupIndex)
+    if (!newNakedPair)
     {
-      // group: rows
-      auto startIndex = sdkg.pRow[groupIndex].cbegin();
-      auto endIndex = sdkg.pRow[groupIndex].cend();
-      while (startIndex != endIndex)
+      SudokuGrid::set_t result;
+      for (int groupIndex = 0; groupIndex < SudokuGrid::ORDER2; ++groupIndex)
       {
-        //cout << **startIndex;
-        if ((*startIndex)->size() == 2) break;
-        ++startIndex;
-      }
-      //cout << endl;
-      auto pIndex = startIndex;
-      if (startIndex != endIndex) ++startIndex;
-      while (startIndex != endIndex)
-      {
-        if (*startIndex == *pIndex) break;
-        ++startIndex;
-      }
-      if (startIndex != endIndex)
-      {
-        result = **startIndex;
-        cout << "Naked pair Row " << groupIndex << " " << result << endl;
-        //writeCandidates(cout, sdkg);
-        //getchar();
-        for (int i = 0; i < SudokuGrid::ORDER2; ++i)
+        // group: rows
+        auto startIndex = sdkg.pRow[groupIndex].cbegin();
+        auto endIndex = sdkg.pRow[groupIndex].cend();
+        while (startIndex != endIndex)
         {
-          if (sdkg._candidates[groupIndex][i].size() > 2)
+          //cout << **startIndex;
+          if ((*startIndex)->size() == 2) break;
+          ++startIndex;
+        }
+        //cout << endl;
+        auto pIndex = startIndex;
+        if (startIndex != endIndex) ++startIndex;
+        while (startIndex != endIndex)
+        {
+          if (*startIndex == *pIndex) break;
+          ++startIndex;
+        }
+        if (startIndex != endIndex)
+        {
+          result = **startIndex;
+          //writeCandidates(cout, sdkg);
+          //getchar();
+          for (int i = 0; i < SudokuGrid::ORDER2; ++i)
           {
-            if (sdkg.removeCandidates(result, groupIndex, i))
+            if (sdkg._candidates[groupIndex][i].size() > 2)
             {
-              newNakedPair = true;
+              if (sdkg.removeCandidates(result, groupIndex, i))
+              {
+                newNakedPair = true;
+                cout << "Naked pair Row " << groupIndex << " " << result << endl;
+              }
+            }
+          }
+        }
+      }
+    }
+    if (!newNakedPair)
+    {
+      SudokuGrid::set_t result;
+      for (int groupIndex = 0; groupIndex < SudokuGrid::ORDER2; ++groupIndex)
+      {
+        // group: blocks
+        auto startIndex = sdkg.pBlock[groupIndex].cbegin();
+        auto endIndex = sdkg.pBlock[groupIndex].cend();
+        while (startIndex != endIndex)
+        {
+          //cout << **startIndex;
+          if ((*startIndex)->size() == 2) break;
+          ++startIndex;
+        }
+        //cout << endl;
+        auto pIndex = startIndex;
+        if (startIndex != endIndex) ++startIndex;
+        while (startIndex != endIndex)
+        {
+          if (*startIndex == *pIndex) break;
+          ++startIndex;
+        }
+        if (startIndex != endIndex)
+        {
+          result = **startIndex;
+          //writeCandidates(cout, sdkg);
+          //getchar();
+          for (int i = 0; i < SudokuGrid::ORDER2; ++i)
+          {
+            if (sdkg._candidates[groupIndex][i].size() > 2)
+            {
+              int row = SudokuGrid::ORDER * (groupIndex / SudokuGrid::ORDER);
+              int col = SudokuGrid::ORDER * (groupIndex % SudokuGrid::ORDER);
+              if (sdkg.removeCandidates(result, row, col))
+              {
+                newNakedPair = true;
+                cout << "Naked pair Block " << groupIndex << " " << result << endl;
+              }
             }
           }
         }
@@ -273,7 +316,6 @@ bool SudokuSolver::solveNakedPair(SudokuGrid& sdkg)
   {
     ++_numberOfNakedPairs;
   }
-  //cout << "NP out" << endl;
   return newNakedPair;
 }
 
