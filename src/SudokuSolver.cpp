@@ -34,7 +34,7 @@ const std::vector<SudokuGrid>& SudokuSolver::solve()
 bool SudokuSolver::solveNakedSingles(SudokuGrid& sdkg)
 {
   bool newNakedSingles {false};
-  sdkg.calculateAllCellCandidates();
+  //sdkg.calculateAllCellCandidates();
   for (int row = 0;
        (row < SudokuGrid::ORDER2)
        && sdkg.isSolvable()
@@ -58,6 +58,9 @@ bool SudokuSolver::solveNakedSingles(SudokuGrid& sdkg)
           sdkg.calculateAllCellCandidates();
           row = 0;
           col = 0;
+          //cout << "NS" << endl;
+          //writeCandidates(cout, sdkg);
+          //getchar();
         }
       }
     }
@@ -178,39 +181,99 @@ bool SudokuSolver::solveNakedPair(SudokuGrid& sdkg)
   bool newNakedPair {false};
   SudokuGrid::set_t result;
 
+  writeCandidates(cout, sdkg);
+  getchar();
   if (sdkg.isSolvable())
   {
     SudokuGrid::set_t result;
-    for (int col = 0; col < SudokuGrid::ORDER2; ++col)
+    for (int groupIndex = 0;
+         !newNakedPair && groupIndex < SudokuGrid::ORDER2;
+         ++groupIndex)
     {
-      //for (int row = 0; row < SudokuGrid::ORDER2; ++row)
-      //{
-
-      auto startCol = sdkg.pColumn[col].cbegin();
-      auto endCol = sdkg.pColumn[col].cend();
-      while (startCol != endCol)
+      // group: columns
+      auto startIndex = sdkg.pColumn[groupIndex].cbegin();
+      auto endIndex = sdkg.pColumn[groupIndex].cend();
+      while (startIndex != endIndex)
       {
-        if ((*startCol)->size() == 2) break;
-        ++startCol;
+        //cout << **startIndex;
+        if ((*startIndex)->size() == 2) break;
+        ++startIndex;
       }
-      auto pCol = startCol;
-      if (startCol != endCol) ++startCol;
-      while (startCol != endCol)
+      auto pIndex = startIndex;
+      if (startIndex != endIndex) ++startIndex;
+      while (startIndex != endIndex)
       {
-        if (*startCol == *pCol) break;
-        ++startCol;
-        //find_if()
+        //cout << **startIndex;
+        if (**startIndex == **pIndex) break;
+        ++startIndex;
       }
-      if (startCol != endCol)
+      //cout << endl;
+      if (startIndex != endIndex)
       {
-        result = **startCol;
-        cout << "Naked pair " << col << " " << result << endl;
-        writeCandidates(cout, sdkg);
-        getchar();
-        //newNakedPair = true;
+        result = **startIndex;
+        cout << "Naked pair Column " << groupIndex << " " << result << endl;
+        //writeCandidates(cout, sdkg);
+        for (int i = 0; i < SudokuGrid::ORDER2; ++i)
+        {
+          if (sdkg._candidates[i][groupIndex].size() > 2)
+          {
+            if (sdkg.removeCandidates(result, i, groupIndex))
+            {
+              newNakedPair = true;
+            }
+          }
+        }
+        //writeCandidates(cout, sdkg);
+        //getchar();
       }
     }
   }
+  if (!newNakedPair)
+  {
+    SudokuGrid::set_t result;
+    for (int groupIndex = 0; groupIndex < SudokuGrid::ORDER2; ++groupIndex)
+    {
+      // group: rows
+      auto startIndex = sdkg.pRow[groupIndex].cbegin();
+      auto endIndex = sdkg.pRow[groupIndex].cend();
+      while (startIndex != endIndex)
+      {
+        //cout << **startIndex;
+        if ((*startIndex)->size() == 2) break;
+        ++startIndex;
+      }
+      //cout << endl;
+      auto pIndex = startIndex;
+      if (startIndex != endIndex) ++startIndex;
+      while (startIndex != endIndex)
+      {
+        if (*startIndex == *pIndex) break;
+        ++startIndex;
+      }
+      if (startIndex != endIndex)
+      {
+        result = **startIndex;
+        cout << "Naked pair Row " << groupIndex << " " << result << endl;
+        //writeCandidates(cout, sdkg);
+        //getchar();
+        for (int i = 0; i < SudokuGrid::ORDER2; ++i)
+        {
+          if (sdkg._candidates[groupIndex][i].size() > 2)
+          {
+            if (sdkg.removeCandidates(result, groupIndex, i))
+            {
+              newNakedPair = true;
+            }
+          }
+        }
+      }
+    }
+  }
+  if (newNakedPair)
+  {
+    ++_numberOfNakedPairs;
+  }
+  //cout << "NP out" << endl;
   return newNakedPair;
 }
 
