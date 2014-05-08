@@ -282,44 +282,48 @@ bool SudokuSolver::solveNakedPair(SudokuGrid& sdkg)
         // group: blocks
         auto startIndex = sdkg.pBlock[groupIndex].cbegin();
         auto endIndex = sdkg.pBlock[groupIndex].cend();
-        cout << "- " << groupIndex << ": ";
+        //cout << "- " << groupIndex << ": ";
         while (startIndex != endIndex)
         {
-          cout << **startIndex;
+          //cout << **startIndex;
           if ((*startIndex)->size() == 2) break;
           ++startIndex;
         }
         //cout << endl;
-        auto pIndex = startIndex;
+        auto pIndex1 = startIndex;
         if (startIndex != endIndex) ++startIndex;
         while (startIndex != endIndex)
         {
-          cout << **startIndex;
-          if (**startIndex == **pIndex) break;
+          //cout << **startIndex;
+          if (**startIndex == **pIndex1) break;
           ++startIndex;
         }
-        cout << endl;
+        auto pIndex2 = startIndex;
+        //cout << endl;
         if (startIndex != endIndex)
         {
-          result = **startIndex;
-          //writeCandidates(cout, sdkg);
-          //getchar();
-          for (int i = 0; i < SudokuGrid::ORDER2; ++i)
+          result = **pIndex1;
+          auto pIndex = sdkg.pBlock[groupIndex].begin();
+          while (pIndex != endIndex)
           {
-            int row = SudokuGrid::ORDER * (groupIndex / SudokuGrid::ORDER);
-            int col = SudokuGrid::ORDER * (groupIndex % SudokuGrid::ORDER);
-            cout << row << "," << col << " ";
-            if (sdkg._candidates[row][col].size() > 2)
+            //cout << **pIndex ;
+            if (pIndex != pIndex1 && pIndex != pIndex2)
             {
-              cout << "NP ";
-              if (sdkg.removeCandidates(result, row, col))
+              if ((**pIndex).size() > 2)
               {
-                newNakedPair = true;
-                cout << "Naked pair Block " << groupIndex << " " << result << endl;
+                SudokuGrid::set_t temp = **pIndex;
+                **pIndex = **pIndex - result;
+                //cout << **pIndex;
+                if (**pIndex != temp)
+                {
+                  newNakedPair = true;
+                  cout << "Naked pair Block " << groupIndex << " "
+                       << result << **pIndex << endl;
+                }
               }
             }
+            ++pIndex;
           }
-          cout << endl;
         }
       }
     }
