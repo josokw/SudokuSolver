@@ -109,9 +109,11 @@ bool isAnElementOf(const T& element, const std::set<T>& set)
 
 template<typename T>
 inline
-void removeElements(const std::set<T>& tobeRemoved, std::set<T>& set)
+bool removeElements(const std::set<T>& tobeRemoved, std::set<T>& set)
 {
+  std::set<T> temp {set};
   set = set - tobeRemoved;
+  return temp != set;
 }
 
 template<typename T>
