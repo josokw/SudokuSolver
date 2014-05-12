@@ -42,10 +42,12 @@ public:
   static const int ORDER2 = (ORDER * ORDER);
   static const int ORDER4 = (ORDER2 * ORDER2);
 
+  using candidates_t = std::array<std::array<set_t, ORDER2>, ORDER2>;
+  using group_t = std::array<std::array<set_t*, ORDER2>, ORDER2>;
+
   SudokuGrid();
   SudokuGrid(const SudokuGrid& sdkg);
   SudokuGrid& operator=(const SudokuGrid& sdkg);
-
   void setID(const std::string& id) { _id = id; }
   const std::string& getID() const { return _id; }
   bool removeCandidates(const set_t& rem, int row, int column);
@@ -94,17 +96,17 @@ private:
   /// Contains for every cell the solution, if the contained value equals 0
   /// then a solution still needs to be calculated.
   std::array<std::array<value_t, ORDER2>, ORDER2> _cell;
-  /// All sets containing candidates.
+  /// All group sets containing all candidates.
   std::array<set_t, ORDER2> _columnSet;
   std::array<set_t, ORDER2> _rowSet;
   std::array<std::array<set_t, ORDER>, ORDER> _blockSet;
 public:
   /// Contains for every cell not yet solved, the set of candidate solutions.
-  std::array<std::array<set_t, ORDER2>, ORDER2> _candidates;
-  /// Group arrays of pointers to Candidates
-  std::array<std::array<set_t*, ORDER2>, ORDER2> pRow;
-  std::array<std::array<set_t*, ORDER2>, ORDER2> pColumn;
-  std::array<std::array<set_t*, ORDER2>, ORDER2> pBlock;
+  candidates_t _candidates;
+  /// Group arrays of pointers to #_candidates
+  group_t pRow;
+  group_t pColumn;
+  group_t pBlock;
 private:
   /// Populate arrays of pointers
   void mapPointerArraysToCandidates();
