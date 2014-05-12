@@ -34,7 +34,7 @@ const std::vector<SudokuGrid>& SudokuSolver::solve()
 bool SudokuSolver::solveNakedSingles(SudokuGrid& sdkg)
 {
   bool newNakedSingles {false};
-  //sdkg.calculateAllCellCandidates();
+
   for (int row = 0;
        (row < SudokuGrid::ORDER2)
        && sdkg.isSolvable()
@@ -185,10 +185,7 @@ bool SudokuSolver::solveNakedPair(SudokuGrid& sdkg)
     //writeCandidates(cout, sdkg);
     //getchar();
      // group: rows
-    if (!newNakedPair)
-    {
-      newNakedPair = solveNakedPair(sdkg.pRow);
-    }
+    newNakedPair = solveNakedPair(sdkg.pRow);
     // group: columns
     if (!newNakedPair)
     {
@@ -279,6 +276,8 @@ void SudokuSolver::solveByRecursion(SudokuGrid& sdkg, int level)
          << _numberOfNotSolvables << endl;
     cout << "---- Maximum recursion depth:              "
          << _maxRecursionDepth << endl;
+    cout << "---- Recursion profile:                    "
+         << sdkg.getID() << endl;
     cout << "---- Number of encountered naked singles:  "
          << _numberOfNakedSingles << endl;
     cout << "---- Number of encountered hidden singles: "

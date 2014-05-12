@@ -26,7 +26,6 @@ const SudokuGrid::set_t SudokuGrid::U
 
 ostream& operator<<(ostream& os, const SudokuGrid& sdkg)
 {
-  os << "- " << sdkg.getID() << endl;
   for (int row = 0; row < SudokuGrid::ORDER2; ++row)
   {
     for (int col = 0; col < SudokuGrid::ORDER2; ++col)
