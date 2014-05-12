@@ -179,135 +179,73 @@ bool SudokuSolver::solveHiddenSingle(SudokuGrid& sdkg)
 bool SudokuSolver::solveNakedPair(SudokuGrid& sdkg)
 {
   bool newNakedPair {false};
-  SudokuGrid::set_t result;
 
   if (sdkg.isSolvable())
   {
-    writeCandidates(cout, sdkg);
-    getchar();
+    //writeCandidates(cout, sdkg);
+    //getchar();
+     // group: rows
     if (!newNakedPair)
     {
-      SudokuGrid::set_t toBeRemoved;
-      for (int groupIndex = 0;
-           !newNakedPair && groupIndex < SudokuGrid::ORDER2;
-           ++groupIndex)
-      {
-        auto startIndex = sdkg.pRow[groupIndex].cbegin();
-        auto endIndex = sdkg.pRow[groupIndex].cend();
-        startIndex = find_if(startIndex, endIndex, [](const SudokuGrid::set_t* set) { return set->size() == 2; });
-        auto pIndex1 = startIndex;
-        if (startIndex != endIndex)
-        {
-          ++startIndex;
-          startIndex = find_if(startIndex, endIndex, [pIndex1](const SudokuGrid::set_t* set) { return *set == **pIndex1; });
-          auto pIndex2 = startIndex;
-          if (startIndex != endIndex)
-          {
-            toBeRemoved = **pIndex1;
-            auto pIndex = sdkg.pRow[groupIndex].begin();
-            while (pIndex != endIndex)
-            {
-              if (pIndex != pIndex1 && pIndex != pIndex2)
-              {
-                if ((**pIndex).size() > 2)
-                {
-                  if (removeElements(toBeRemoved, **pIndex))
-                  {
-                    newNakedPair = true;
-                    cout << "Naked pair Row " << groupIndex << " " << toBeRemoved << **pIndex << endl;
-                  }
-                }
-              }
-              ++pIndex;
-            }
-          }
-        }
-      }
+      newNakedPair = solveNakedPair(sdkg.pRow);
     }
     // group: columns
     if (!newNakedPair)
     {
-      SudokuGrid::set_t toBeRemoved;
-      for (int groupIndex = 0;
-           !newNakedPair && groupIndex < SudokuGrid::ORDER2;
-           ++groupIndex)
-      {
-        auto startIndex = sdkg.pColumn[groupIndex].cbegin();
-        auto endIndex = sdkg.pColumn[groupIndex].cend();
-        startIndex = find_if(startIndex, endIndex, [](const SudokuGrid::set_t* set) { return set->size() == 2; });
-        auto pIndex1 = startIndex;
-        if (startIndex != endIndex)
-        {
-          ++startIndex;
-          startIndex = find_if(startIndex, endIndex, [pIndex1](const SudokuGrid::set_t* set) { return *set == **pIndex1; });
-          auto pIndex2 = startIndex;
-          if (startIndex != endIndex)
-          {
-            toBeRemoved = **pIndex1;
-            auto pIndex = sdkg.pColumn[groupIndex].begin();
-            while (pIndex != endIndex)
-            {
-              if (pIndex != pIndex1 && pIndex != pIndex2)
-              {
-                if ((**pIndex).size() > 2)
-                {
-                  if (removeElements(toBeRemoved, **pIndex))
-                  {
-                    newNakedPair = true;
-                    cout << "Naked pair Column " << groupIndex << " " << toBeRemoved << **pIndex << endl;
-                  }
-                }
-              }
-              ++pIndex;
-            }
-          }
-        }
-      }
+      newNakedPair = solveNakedPair(sdkg.pColumn);
     }
-    // Group: blocks
+    // group: blocks
     if (!newNakedPair)
     {
-      SudokuGrid::set_t toBeRemoved;
-      for (int groupIndex = 0;
-           !newNakedPair && groupIndex < SudokuGrid::ORDER2;
-           ++groupIndex)
-      {
-        auto startIndex = sdkg.pBlock[groupIndex].cbegin();
-        auto endIndex = sdkg.pBlock[groupIndex].cend();
-        startIndex = find_if(startIndex, endIndex, [](const SudokuGrid::set_t* set) { return set->size() == 2; });
-        auto pIndex1 = startIndex;
-        if (startIndex != endIndex)
-        {
-          ++startIndex;
-          startIndex = find_if(startIndex, endIndex, [pIndex1](const SudokuGrid::set_t* set) { return *set == **pIndex1; });
-          auto pIndex2 = startIndex;
-          if (startIndex != endIndex)
-          {
-            toBeRemoved = **pIndex1;
-            auto pIndex = sdkg.pBlock[groupIndex].begin();
-            while (pIndex != endIndex)
-            {
-              if (pIndex != pIndex1 && pIndex != pIndex2)
-              {
-                if ((**pIndex).size() > 2)
-                {
-                  if (removeElements(toBeRemoved, **pIndex))
-                  {
-                    newNakedPair = true;
-                    cout << "Naked pair Block " << groupIndex << " " << toBeRemoved << **pIndex << endl;
-                  }
-                }
-              }
-              ++pIndex;
-            }
-          }
-        }
-      }
+      newNakedPair = solveNakedPair(sdkg.pBlock);
     }
   }
   if (newNakedPair)
   {
     ++_numberOfNakedPairs;
+  }
+  return newNakedPair;
+}
+
+bool SudokuSolver::solveNakedPair(SudokuGrid::group_t& group)
+{
+  bool newNakedPair {false};
+  SudokuGrid::set_t toBeRemoved;
+
+  for (int groupIndex = 0;
+       !newNakedPair && groupIndex < SudokuGrid::ORDER2;
+       ++groupIndex)
+  {
+    auto startIndex = group[groupIndex].cbegin();
+    auto endIndex = group[groupIndex].cend();
+    startIndex = find_if(startIndex, endIndex, [](const SudokuGrid::set_t* set) { return set->size() == 2; });
+    auto pIndex1 = startIndex;
+    if (startIndex != endIndex)
+    {
+      ++startIndex;
+      startIndex = find_if(startIndex, endIndex, [pIndex1](const SudokuGrid::set_t* set) { return *set == **pIndex1; });
+      auto pIndex2 = startIndex;
+      if (startIndex != endIndex)
+      {
+        toBeRemoved = **pIndex1;
+        auto pIndex = group[groupIndex].begin();
+        while (pIndex != endIndex)
+        {
+          if (pIndex != pIndex1 && pIndex != pIndex2)
+          {
+            if ((**pIndex).size() > 2)
+            {
+              if (removeElements(toBeRemoved, **pIndex))
+              {
+                newNakedPair = true;
+                //cout << "Naked pair " << groupIndex << " " << toBeRemoved << **pIndex << endl;
+              }
+            }
+          }
+          ++pIndex;
+        }
+      }
+    }
   }
   return newNakedPair;
 }

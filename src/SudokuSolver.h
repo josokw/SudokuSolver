@@ -25,6 +25,7 @@ private:
   bool solveNakedSingles(SudokuGrid& sdkg);
   bool solveHiddenSingle(SudokuGrid& sdkg);
   bool solveNakedPair(SudokuGrid& sdkg);
+  bool solveNakedPair(SudokuGrid::group_t& group);
   /// Brute force solving
   void solveByRecursion(SudokuGrid& sdkg, int level = 0);
 };
