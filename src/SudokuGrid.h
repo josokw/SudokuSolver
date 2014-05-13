@@ -112,8 +112,8 @@ private:
   /// Populate arrays of pointers
   void mapPointerArraysToCandidates();
   /// Calculates all candidates for a certain cell.
-  /// The sets U, _columnSet, _rowSet and _blockSet must be up to date.
-  /// Sets IsSolvable status.
+  /// The sets #_columnSet, #_rowSet and #_blockSet must be up to date.
+  /// Sets #_isSolvable status.
   SudokuGrid::set_t calculateCellCandidates(int row, int column) const;
 };
 
