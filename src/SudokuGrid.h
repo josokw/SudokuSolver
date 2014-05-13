@@ -26,8 +26,10 @@
 ///
 /// Well formed Sudoku puzzles have only 1 solution.
 ///
+
 class SudokuGrid
 {
+  friend class SudokuSolver;
   friend bool operator==(const SudokuGrid& lhs, const SudokuGrid& rhs);
   friend std::ostream& operator<<(std::ostream& os, const SudokuGrid& sdkg);
   friend std::istream& operator>>(std::istream& is, SudokuGrid& sdkg);
@@ -100,19 +102,18 @@ private:
   std::array<set_t, ORDER2> _columnSet;
   std::array<set_t, ORDER2> _rowSet;
   std::array<std::array<set_t, ORDER>, ORDER> _blockSet;
-public:
   /// Contains for every cell not yet solved, the set of candidate solutions.
   candidates_t _candidates;
   /// Group arrays of pointers to #_candidates
   group_t pRow;
   group_t pColumn;
   group_t pBlock;
-private:
+
   /// Populate arrays of pointers
   void mapPointerArraysToCandidates();
   /// Calculates all candidates for a certain cell.
-  /// The sets U, ColumnSet, RowSet and BlockSet must be up to date.
-  /// Sets IsSolveable status.
+  /// The sets U, _columnSet, _rowSet and _blockSet must be up to date.
+  /// Sets IsSolvable status.
   SudokuGrid::set_t calculateCellCandidates(int row, int column) const;
 };
 
