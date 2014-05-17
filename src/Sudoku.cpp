@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
         Input >> sdkg;
         cout << "- Number of clues: " << sdkg.getNumberOfCellsSolved() << endl;
         cout << endl << sdkg << endl;
-        SudokuSolver sdkSolver(sdkg);
+        SudokuSolver sdkSolver(sdkg, 15);
 
         auto t1 = chrono::system_clock::now();
         solutions = sdkSolver.solve();
@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
         cout << "---- Processing time: " << fixed << setprecision(4)
              << d.count() << " sec" << endl << endl;
         cout << "---- Sudoku solution(s), " << solutions.size()
-             << " found:\n";
+             << " found:" << endl << endl;
         for (const auto& solution: solutions)
         {
-          cout << endl << solution << endl;
+          cout << solution << endl;
         }
         cout << "- Sudoku solver, solved puzzle: " << fileName << endl << endl;
       }
