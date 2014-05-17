@@ -50,20 +50,13 @@ public:
   SudokuGrid();
   SudokuGrid(const SudokuGrid& sdkg);
   SudokuGrid& operator=(const SudokuGrid& sdkg);
-  void setID(const std::string& id) { _id = id; }
-  const std::string& getID() const { return _id; }
-  bool removeCandidates(const set_t& rem, int row, int column);
-  /// Adds an allowed solution for a certain cell to Cell.
-  /// Increments _numberOfCellsSolved.
-  void add(const value_t value, int row, int column);
-  /// Adds a solution for a certain cell to Cell.
-  void unsafeAdd(const value_t value, int row, int column);
-  /// Calculates all candidate solutions for every cell not yet solved.
-  void calculateAllCellCandidates();
-  /// Gets all candidates for a certain cell.
-  const set_t& getCellCandidates(int row, int column) const
+  void setID(const std::string& id)
   {
-    return _candidates[row][column];
+    _id = id;
+  }
+  const std::string& getID() const
+  {
+    return _id;
   }
   /// Checks if a Sudoku puzzle is solved.
   /// All cells should be solved to fulfill this condition.
@@ -109,6 +102,19 @@ private:
   group_t pColumn;
   group_t pBlock;
 
+  bool removeCandidates(const set_t& rem, int row, int column);
+  /// Adds an allowed solution for a certain cell to Cell.
+  /// Increments _numberOfCellsSolved.
+  void add(const value_t value, int row, int column);
+  /// Adds a solution for a certain cell to Cell.
+  void unsafeAdd(const value_t value, int row, int column);
+  /// Calculates all candidate solutions for every cell not yet solved.
+  void calculateAllCellCandidates();
+  /// Gets all candidates for a certain cell.
+  const set_t& getCellCandidates(int row, int column) const
+  {
+    return _candidates[row][column];
+  }
   /// Populate arrays of pointers
   void mapPointerArraysToCandidates();
   /// Calculates all candidates for a certain cell.
