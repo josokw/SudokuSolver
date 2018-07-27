@@ -1,5 +1,3 @@
-//----------------------------------------------------------------- SudokuGrid.h
-
 #ifndef SUDOKUGRID_H
 #define SUDOKUGRID_H
 
@@ -29,100 +27,83 @@
 
 class SudokuGrid
 {
-  friend class SudokuSolver;
-  friend bool operator==(const SudokuGrid& lhs, const SudokuGrid& rhs);
-  friend std::ostream& operator<<(std::ostream& os, const SudokuGrid& sdkg);
-  friend std::istream& operator>>(std::istream& is, SudokuGrid& sdkg);
-  friend void writeCandidates(std::ostream& os, const SudokuGrid& sdkg);
-  friend void writeLatex(std::ostream& os, const SudokuGrid& sdkg);
+   friend class SudokuSolver;
+   friend bool operator==(const SudokuGrid &lhs, const SudokuGrid &rhs);
+   friend std::ostream &operator<<(std::ostream &os, const SudokuGrid &sdkg);
+   friend std::istream &operator>>(std::istream &is, SudokuGrid &sdkg);
+   friend void writeCandidates(std::ostream &os, const SudokuGrid &sdkg);
+   friend void writeLatex(std::ostream &os, const SudokuGrid &sdkg);
 
 public:
-  using value_t = unsigned short;
-  using set_t = std::set<value_t>;
+   using value_t = unsigned short;
+   using set_t = std::set<value_t>;
 
-  static const int ORDER = 3;
-  static const int ORDER2 = (ORDER * ORDER);
-  static const int ORDER4 = (ORDER2 * ORDER2);
+   static const int ORDER = 3;
+   static const int ORDER2 = (ORDER * ORDER);
+   static const int ORDER4 = (ORDER2 * ORDER2);
 
-  using candidates_t = std::array<std::array<set_t, ORDER2>, ORDER2>;
-  using group_t = std::array<std::array<set_t*, ORDER2>, ORDER2>;
+   using candidates_t = std::array<std::array<set_t, ORDER2>, ORDER2>;
+   using group_t = std::array<std::array<set_t *, ORDER2>, ORDER2>;
 
-  SudokuGrid();
-  SudokuGrid(const SudokuGrid& sdkg);
-  SudokuGrid& operator=(const SudokuGrid& sdkg);
-  void setID(const std::string& id)
-  {
-    _id = id;
-  }
-  const std::string& getID() const
-  {
-    return _id;
-  }
-  /// Checks if a Sudoku puzzle is solved.
-  /// All cells should be solved to fulfill this condition.
-  bool isSolved() const
-  {
-    return _numberOfCellsSolved == SudokuGrid::ORDER4;
-  }
-  /// Checks if a cell is already solved.
-  bool cellIsSolved(int row, int column) const
-  {
-    return _cell[row][column] != 0;
-  }
-  /// Returns the number of solved cells
-  int getNumberOfCellsSolved() const
-  {
-    return _numberOfCellsSolved;
-  }
-  /// Returns solvability status.
-  bool isSolvable() const
-  {
-    return _isSolvable;
-  }
+   SudokuGrid();
+   SudokuGrid(const SudokuGrid &sdkg);
+   SudokuGrid &operator=(const SudokuGrid &sdkg);
+   void setID(const std::string &id) { _id = id; }
+   const std::string &getID() const { return _id; }
+   /// Checks if a Sudoku puzzle is solved.
+   /// All cells should be solved to fulfill this condition.
+   bool isSolved() const { return _numberOfCellsSolved == SudokuGrid::ORDER4; }
+   /// Checks if a cell is already solved.
+   bool cellIsSolved(int row, int column) const
+   {
+      return _cell[row][column] != 0;
+   }
+   /// Returns the number of solved cells
+   int getNumberOfCellsSolved() const { return _numberOfCellsSolved; }
+   /// Returns solvability status.
+   bool isSolvable() const { return _isSolvable; }
 
 private:
-  /// Set EMPTY: empty set.
-  static const set_t EMPTY;
-  /// Set U: Universe, this set contains all allowed cell values.
-  static const set_t U;
-  std::string _id;
-  int _numberOfCellsSolved;
-  bool _isSolvable;
-  /// Contains for every cell the solution, if the contained value equals 0
-  /// then a solution still needs to be calculated.
-  std::array<std::array<value_t, ORDER2>, ORDER2> _cell;
-  /// All group sets containing all candidates.
-  std::array<set_t, ORDER2> _columnSet;
-  std::array<set_t, ORDER2> _rowSet;
-  std::array<std::array<set_t, ORDER>, ORDER> _blockSet;
-  /// Contains for every cell not yet solved, the set of candidate solutions.
-  candidates_t _candidates;
-  /// Group arrays of pointers to #_candidates
-  group_t pRow;
-  group_t pColumn;
-  group_t pBlock;
+   /// Set EMPTY: empty set.
+   static const set_t EMPTY;
+   /// Set U: Universe, this set contains all allowed cell values.
+   static const set_t U;
+   std::string _id;
+   int _numberOfCellsSolved;
+   bool _isSolvable;
+   /// Contains for every cell the solution, if the contained value equals 0
+   /// then a solution still needs to be calculated.
+   std::array<std::array<value_t, ORDER2>, ORDER2> _cell;
+   /// All group sets containing all candidates.
+   std::array<set_t, ORDER2> _columnSet;
+   std::array<set_t, ORDER2> _rowSet;
+   std::array<std::array<set_t, ORDER>, ORDER> _blockSet;
+   /// Contains for every cell not yet solved, the set of candidate solutions.
+   candidates_t _candidates;
+   /// Group arrays of pointers to #_candidates
+   group_t pRow;
+   group_t pColumn;
+   group_t pBlock;
 
-  bool removeCandidates(const set_t& rem, int row, int column);
-  /// Adds an allowed solution for a certain cell to Cell.
-  /// Increments _numberOfCellsSolved.
-  void add(const value_t value, int row, int column);
-  /// Adds a solution for a certain cell to Cell.
-  void unsafeAdd(const value_t value, int row, int column);
-  /// Calculates all candidate solutions for every cell not yet solved.
-  void calculateAllCellCandidates();
-  /// Gets all candidates for a certain cell.
-  const set_t& getCellCandidates(int row, int column) const
-  {
-    return _candidates[row][column];
-  }
-  /// Populate arrays of pointers
-  void mapPointerArraysToCandidates();
-  /// Calculates all candidates for a certain cell.
-  /// The sets #_columnSet, #_rowSet and #_blockSet must be up to date.
-  /// Sets #_isSolvable status.
-  SudokuGrid::set_t calculateCellCandidates(int row, int column) const;
+   bool removeCandidates(const set_t &rem, int row, int column);
+   /// Adds an allowed solution for a certain cell to Cell.
+   /// Increments _numberOfCellsSolved.
+   void add(const value_t value, int row, int column);
+   /// Adds a solution for a certain cell to Cell.
+   void unsafeAdd(const value_t value, int row, int column);
+   /// Calculates all candidate solutions for every cell not yet solved.
+   void calculateAllCellCandidates();
+   /// Gets all candidates for a certain cell.
+   const set_t &getCellCandidates(int row, int column) const
+   {
+      return _candidates[row][column];
+   }
+   /// Populate arrays of pointers
+   void mapPointerArraysToCandidates();
+   /// Calculates all candidates for a certain cell.
+   /// The sets #_columnSet, #_rowSet and #_blockSet must be up to date.
+   /// Sets #_isSolvable status.
+   SudokuGrid::set_t calculateCellCandidates(int row, int column) const;
 };
 
 #endif
-
-//------------------------------------------------------------- eof SudokuGrid.h
