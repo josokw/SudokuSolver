@@ -1,5 +1,10 @@
-CXX = clang++
-CXXFLAGS = -std=c++11 -Wall -Wextra -Weffc++ -O3
+CXX = g++
+CXXFLAGS = -std=c++14 -Wall -Wextra -Weffc++ -Wpedantic \
+           -Wold-style-cast -Winit-self -Wno-unused -Wshadow \
+		   -Wno-parentheses -Wlogical-op -Wredundant-decls \
+		   -Wcast-align -Wsign-promo -Wmissing-include-dirs \
+		   -Woverloaded-virtual -Wctor-dtor-privacy \
+		   -O3
 
 EXECUTABLE = sudoku
 SOURCES = ${wildcard *.cpp}
@@ -27,4 +32,3 @@ clean:
 .PHONY: clean-depend
 clean-depend: clean
 	$(RM) depend
-
