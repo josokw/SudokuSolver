@@ -172,6 +172,9 @@ SudokuGrid::SudokuGrid()
    , _rowSet{{}}
    , _blockSet{{}}
    , _candidates{{}}
+   , pRow{}
+   , pColumn{}
+   , pBlock{}
 {
    for (int row = 0; row < SudokuGrid::ORDER2; ++row) {
       for (int column = 0; column < SudokuGrid::ORDER2; ++column) {
@@ -189,15 +192,18 @@ SudokuGrid::SudokuGrid()
 }
 
 SudokuGrid::SudokuGrid(const SudokuGrid &sdkg)
-   : _numberOfCellsSolved{sdkg._numberOfCellsSolved}
+   : _id{sdkg._id}
+   , _numberOfCellsSolved{sdkg._numberOfCellsSolved}
    , _isSolvable{sdkg._isSolvable}
    , _cell{{}}
    , _columnSet{{}}
    , _rowSet{{}}
    , _blockSet{{}}
    , _candidates{{}}
+   , pRow{}
+   , pColumn{}
+   , pBlock{}
 {
-   _id = sdkg._id;
    _cell = sdkg._cell;
    _columnSet = sdkg._columnSet;
    _rowSet = sdkg._rowSet;
