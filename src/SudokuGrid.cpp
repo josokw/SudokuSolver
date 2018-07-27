@@ -1,5 +1,3 @@
-//--------------------------------------------------------------- SudokuGrid.cpp
-
 #include "SudokuGrid.h"
 #include "SetOperations.h"
 
@@ -74,8 +72,9 @@ void writeCandidates(std::ostream &os, const SudokuGrid &sdkg)
             }
             os << endl << horz2 << endl;
          }
-         if (col == 0)
+         if (col == 0) {
             os << "| ";
+         }
          SudokuGrid::set_t candidates = sdkg.getCellCandidates(row, col);
          for (SudokuGrid::value_t v = 1; v <= SudokuGrid::ORDER; ++v) {
             if (isAnElementOf(v, candidates)) {
@@ -94,8 +93,9 @@ void writeCandidates(std::ostream &os, const SudokuGrid &sdkg)
       }
       os << endl;
       for (int col = 0; col < SudokuGrid::ORDER2; ++col) {
-         if (col == 0)
+         if (col == 0) {
             os << "| ";
+         }
          int pos{-1};
          SudokuGrid::set_t candidates{sdkg.getCellCandidates(row, col)};
          for (SudokuGrid::value_t v = SudokuGrid::ORDER + 1;
@@ -122,8 +122,9 @@ void writeCandidates(std::ostream &os, const SudokuGrid &sdkg)
       }
       os << endl;
       for (int col = 0; col < SudokuGrid::ORDER2; ++col) {
-         if (col == 0)
+         if (col == 0) {
             os << "| ";
+         }
          SudokuGrid::set_t candidates{sdkg.getCellCandidates(row, col)};
          for (SudokuGrid::value_t v = 2 * SudokuGrid::ORDER + 1;
               v < 3 * SudokuGrid::ORDER + 1; ++v) {
@@ -336,5 +337,3 @@ void SudokuGrid::mapPointerArraysToCandidates()
       }
    }
 }
-
-//----------------------------------------------------------- eof SudokuGrid.cpp
