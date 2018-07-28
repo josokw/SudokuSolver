@@ -49,7 +49,8 @@ Easy Sudoku:
 
     0 4 0  9 0 2  0 0 1
 
-The application can also read basic SadMan Software Sudoku .sdk files.
+The application can also read basic [SadMan Software Sudoku](http://www.sadmansoftware.com/sudoku/solvingtechniques.php)
+.sdk files.
 
 ## Building
 
