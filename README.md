@@ -13,7 +13,7 @@ Every Sudoku puzzle should have only one unique solution
 (proper Sudoku puzzle).
 
 These Sudoku cell groups are implemented by using the C++ STL std::sets.
-For solving we use set operations in different solving startegies.
+For solving we use set operations in different solving strategies.
 
 It is proved (2012) that the minimum number of clues in any (9 x 9) proper
 Sudoku puzzle is 17.
@@ -48,6 +48,8 @@ Easy Sudoku:
     2 0 1  0 0 5  0 6 0
 
     0 4 0  9 0 2  0 0 1
+
+The application can also read basic SadMan Software Sudoku .sdk files.
 
 ## Building
 
