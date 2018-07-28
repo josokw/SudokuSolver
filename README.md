@@ -25,9 +25,9 @@ Implemented solving strategies:
 - Naked pairs
 - Brute force recursive backtracking
 
-## Input format
+## Input formats
 
-Easy Sudoku:
+Example 1:
 
     0 0 0  7 0 3  0 0 6
 
@@ -51,6 +51,18 @@ Easy Sudoku:
 
 The application can also read basic [SadMan Software Sudoku](http://www.sadmansoftware.com/sudoku/solvingtechniques.php)
 *.sdk* files.
+
+Example 2:
+
+    ..5..3.8.
+    ..789....
+    1........
+    9.1.8.25.
+    .7..2..3.
+    .54.3.8.7
+    ........1
+    ....584..
+    .1.4..3..
 
 ## Building
 
