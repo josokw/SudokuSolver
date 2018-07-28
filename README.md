@@ -27,6 +27,8 @@ Implemented solving strategies:
 
 ## Input formats
 
+The Sudoku solver can read several input text formats.
+
 Example 1:
 
     0 0 0  7 0 3  0 0 6
@@ -63,6 +65,13 @@ Example 2:
     ........1
     ....584..
     .1.4..3..
+
+The application can also read "one liners", for example evil Sudoku puzzles
+*17 givens* [Gordon Royle, The University of Western Australia](http://staffhome.ecm.uwa.edu.au/~00013890/sudoku17-ml).
+
+Example 3:
+
+    100005090000010004000000000000006150004900000020000000080470000500000800000200000
 
 ## Building
 
