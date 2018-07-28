@@ -47,12 +47,14 @@ ostream &operator<<(ostream &os, const SudokuGrid &sdkg)
 
 std::istream &operator>>(std::istream &is, SudokuGrid &sdkg)
 {
-   int value{0};
-
    for (int row = 0; row < SudokuGrid::ORDER2; ++row) {
       for (int col = 0; col < SudokuGrid::ORDER2; ++col) {
-         is >> value;
-         sdkg.add(value, row, col);
+         char value{0};
+         is >> std::skipws >> value;
+         if (value == '.') {
+            value = '0';
+         }
+         sdkg.add(value - '0', row, col);
       }
    }
    sdkg.calculateAllCellCandidates();
@@ -63,8 +65,8 @@ void writeCandidates(std::ostream &os, const SudokuGrid &sdkg)
 {
    for (int row = 0; row < SudokuGrid::ORDER2; ++row) {
       for (int col = 0; col < SudokuGrid::ORDER2; ++col) {
-         if (col == 0 && row % SudokuGrid::ORDER == 0 &&
-             row < SudokuGrid::ORDER2 - 1) {
+         if (col == 0 and (row % SudokuGrid::ORDER == 0) and
+             (row < SudokuGrid::ORDER2 - 1)) {
             os << horz;
             if (row == 0) {
                os << " ID = " << &sdkg << " " << sdkg.getID() << " "
@@ -243,8 +245,8 @@ void SudokuGrid::add(const value_t value, int row, int column)
 {
    if (isSolvable()) {
       if (isAnElementOf(value, SudokuGrid::U)) {
-         // cout << "-- Add: " << Value << " in [" << Row << "][" << Column <<
-         // "]" << endl;
+         // cout << "-- Add: " << value << " in [" << row << "][" << column
+         //      << // "]" << endl;
          if (isAnElementOf(value, _columnSet[column]) &&
              isAnElementOf(value, _rowSet[row]) &&
              isAnElementOf(value, _blockSet[row / SudokuGrid::ORDER]
