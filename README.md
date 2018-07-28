@@ -1,19 +1,29 @@
 # Sudoku solver
 
 Console application implemented in C++. The initial code was developed in
-C++98. It is now refactored to C++11.
+C++98. It is now refactored to C++14.
 
-Sudoku grid (order 3) contains 9 x 9 cells.
+A Sudoku grid (order 3) contains 9 x 9 cells.
 Cell groups: rows (9 x 9), columns (9 x 9) and blocks (9 x 3x3).
-These groups are implemented by STL std::sets.
-Goal: solve Sudoku puzzles using set operations.
+A Sudoku puzzle contains a partially completed row-column grid of
+prescribed set of 9 distinct symbols.  
+Each cell group should be filled by exactly one of each element of the
+prescibed symbols.
+Every Sudoku puzzle should have only one unique solution
+(proper Sudoku puzzle).
 
-Solving strategies:
+These Sudoku cell groups are implemented by using the C++ STL std::sets.
+For solving we use set operations in different solving startegies.
+
+It is proved (2012) that the minimum number of clues in any (9 x 9) proper
+Sudoku puzzle is 17.
+
+Implemented solving strategies:
 
 - Naked singles
 - Hidden singles
 - Naked pairs
-- Brute force recursive
+- Brute force recursive backtracking
 
 ## Input format
 
@@ -42,14 +52,14 @@ Easy Sudoku:
 ## Building
 
 This program does not need any external libs.
-The makefile is in the src directory.
-For building type:
+The makefile is in the *src* directory.
+For building, type:
   
     make
 
 ## Executing
 
-Some puzzles are available in the puzzles directory.
+Some puzzles are available in the *puzzles* directory.
 Solve one puzzle:
 
     ./sudoku ../puzzles/Data01.sdk
