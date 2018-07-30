@@ -10,47 +10,51 @@ template <typename T>
 std::ostream &operator<<(std::ostream &os, const std::set<T> &set)
 {
    os << "{ ";
-   std::copy(set.cbegin(), set.cend(), std::ostream_iterator<T>(os, " "));
+   std::copy(std::cbegin(set), std::cend(set),
+             std::ostream_iterator<T>(os, " "));
    os << "}";
    return os;
 }
 
 template <typename T>
-std::set<T> Union(const std::set<T> &setA, const std::set<T> &setB)
+std::set<T> setsUnion(const std::set<T> &setA, const std::set<T> &setB)
 {
    std::set<T> setC;
-   std::set_union(setA.cbegin(), setA.cend(), setB.cbegin(), setB.cend(),
-                  std::insert_iterator<std::set<T>>(setC, setC.begin()));
+   std::set_union(std::cbegin(setA), std::cend(setA), std::cbegin(setB),
+                  std::cend(setB),
+                  std::insert_iterator<std::set<T>>(setC, std::begin(setC)));
    return setC;
 }
 
 template <typename T>
-inline std::set<T> operator+(const std::set<T> &setA, const std::set<T> &setB)
+inline std::set<T> operator+(const std::set<T> &lhs, const std::set<T> &rhs)
 {
-   return Union(setA, setB);
+   return setsUnion(lhs, rhs);
 }
 
 template <typename T>
-std::set<T> difference(const std::set<T> &setA, const std::set<T> &setB)
+std::set<T> setsDifference(const std::set<T> &setA, const std::set<T> &setB)
 {
    std::set<T> setC;
-   std::set_difference(setA.cbegin(), setA.cend(), setB.cbegin(), setB.cend(),
-                       std::insert_iterator<std::set<T>>(setC, setC.begin()));
+   std::set_difference(
+      std::cbegin(setA), std::cend(setA), std::cbegin(setB), std::cend(setB),
+      std::insert_iterator<std::set<T>>(setC, std::begin(setC)));
    return setC;
 }
 
 template <typename T>
-inline std::set<T> operator-(const std::set<T> &setA, const std::set<T> &setB)
+inline std::set<T> operator-(const std::set<T> &lhs, const std::set<T> &rhs)
 {
-   return difference(setA, setB);
+   return setsDifference(lhs, rhs);
 }
 
 template <typename T>
-std::set<T> intersection(const std::set<T> &setA, const std::set<T> &setB)
+std::set<T> setsIntersection(const std::set<T> &setA, const std::set<T> &setB)
 {
    std::set<T> setC;
-   std::set_intersection(setA.cbegin(), setA.cend(), setB.cbegin(), setB.cend(),
-                         std::insert_iterator<std::set<T>>(setC, setC.begin()));
+   std::set_intersection(
+      std::cbegin(setA), std::cend(setA), std::cbegin(setB), std::cend(setB),
+      std::insert_iterator<std::set<T>>(setC, std::begin(setC)));
    return setC;
 }
 
@@ -58,7 +62,7 @@ std::set<T> intersection(const std::set<T> &setA, const std::set<T> &setB)
 template <typename T>
 inline std::set<T> operator*(const std::set<T> &setA, const std::set<T> &setB)
 {
-   return intersection(setA, setB);
+   return setsIntersection(setA, setB);
 }
 
 template <typename T>
@@ -79,11 +83,11 @@ bool isASubsetOf(const std::set<T> &setA, const std::set<T> &setB)
    if (&setA == &setB) {
       return true;
    }
-   auto iSetA = setA.cbegin();
-   auto iSetB = setB.cbegin();
-   while (iSetB != setB.cend()) {
+   auto iSetA = std::cbegin(setA);
+   auto iSetB = std::cbegin(setB);
+   while (iSetB != std::cend(setB)) {
       iSetA = setA.find(*iSetB++);
-      if (iSetA == setA.cend()) {
+      if (iSetA == std::cend(setA)) {
          return false;
       }
    }
@@ -93,7 +97,7 @@ bool isASubsetOf(const std::set<T> &setA, const std::set<T> &setB)
 template <typename T>
 inline bool isAnElementOf(const T &element, const std::set<T> &set)
 {
-   return set.find(element) != set.cend();
+   return set.find(element) != std::cend(set);
 }
 
 template <typename T>
