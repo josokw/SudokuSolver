@@ -5,21 +5,20 @@
 #include <stdexcept>
 #include <string>
 
-using namespace std;
-
 namespace {
-const string subhorz(13, '-');
-const string subhorz2(13, ' ');
-const string horz = "+" + subhorz + "+" + subhorz + "+" + subhorz + "+";
-const string horz2 = "|" + subhorz2 + "|" + subhorz2 + "|" + subhorz2 + "|";
-const string vert(11, '|');
+const std::string subhorz(13, '-');
+const std::string subhorz2(13, ' ');
+const std::string horz = "+" + subhorz + "+" + subhorz + "+" + subhorz + "+";
+const std::string horz2 =
+   "|" + subhorz2 + "|" + subhorz2 + "|" + subhorz2 + "|";
+const std::string vert(11, '|');
 } // namespace
 
 const SudokuGrid::set_t SudokuGrid::EMPTY;
 const SudokuGrid::set_t SudokuGrid::U{
    makeRange<SudokuGrid::value_t>(1, SudokuGrid::ORDER2 + 1)};
 
-ostream &operator<<(ostream &os, const SudokuGrid &sdkg)
+std::ostream &operator<<(std::ostream &os, const SudokuGrid &sdkg)
 {
    for (int row = 0; row < SudokuGrid::ORDER2; ++row) {
       for (int col = 0; col < SudokuGrid::ORDER2; ++col) {
@@ -33,14 +32,14 @@ ostream &operator<<(ostream &os, const SudokuGrid &sdkg)
             os << " " << sdkg.cell_[row][col] << " ";
          }
       }
-      os << endl;
+      os << std::endl;
       if ((row != SudokuGrid::ORDER2 - 1) &&
           (row % SudokuGrid::ORDER == (SudokuGrid::ORDER - 1))) {
          // @TODO Remove magic number
-         os << string(29, '-') << endl;
+         os << std::string(29, '-') << std::endl;
       }
    }
-   os << endl;
+   os << std::endl;
 
    return os;
 }
@@ -72,7 +71,7 @@ void writeCandidates(std::ostream &os, const SudokuGrid &sdkg)
                os << " ID = " << &sdkg << " " << sdkg.getID() << " "
                   << (sdkg.isSolvable() ? "" : " not solvable");
             }
-            os << endl << horz2 << endl;
+            os << "\n" << horz2 << std::endl;
          }
          if (col == 0) {
             os << "| ";
@@ -93,7 +92,7 @@ void writeCandidates(std::ostream &os, const SudokuGrid &sdkg)
             os << " ";
          }
       }
-      os << endl;
+      os << std::endl;
       for (int col = 0; col < SudokuGrid::ORDER2; ++col) {
          if (col == 0) {
             os << "| ";
@@ -122,7 +121,7 @@ void writeCandidates(std::ostream &os, const SudokuGrid &sdkg)
             os << " ";
          }
       }
-      os << endl;
+      os << std::endl;
       for (int col = 0; col < SudokuGrid::ORDER2; ++col) {
          if (col == 0) {
             os << "| ";
@@ -144,9 +143,9 @@ void writeCandidates(std::ostream &os, const SudokuGrid &sdkg)
             os << " ";
          }
       }
-      os << endl << horz2 << endl;
+      os << "\n" << horz2 << std::endl;
    }
-   os << horz << endl;
+   os << horz << std::endl;
 }
 
 void writeLatex(std::ostream &os, const SudokuGrid &sdkg)
@@ -264,23 +263,24 @@ void SudokuGrid::add(const value_t value, int row, int column)
             // writeCandidates(cout, *this);
             // getchar();
             throw std::logic_error(
-               "-- [" + to_string(row) + "][" + to_string(column) +
-               "] Sudoku element: " + to_string(value) + " not in groups");
+               "-- [" + std::to_string(row) + "][" + std::to_string(column) +
+               "] Sudoku element: " + std::to_string(value) + " not in groups");
          }
       }
       else {
          if (value != 0) {
-            throw std::logic_error("-- Sudoku element: " + to_string(value) +
-                                   " must be in the range "
-                                   "[1," +
-                                   to_string(SudokuGrid::ORDER2) + "]");
+            throw std::logic_error(
+               "-- Sudoku element: " + std::to_string(value) +
+               " must be in the range "
+               "[1," +
+               std::to_string(SudokuGrid::ORDER2) + "]");
          }
          cell_[row][column] = 0;
       }
       calculateAllCellCandidates();
    }
    else {
-      cout << "ADD to not solvable sudoku grid " << getID() << endl;
+      std::cout << "ADD to not solvable sudoku grid " << getID() << std::endl;
    }
 }
 
