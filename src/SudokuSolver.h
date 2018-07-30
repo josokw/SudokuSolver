@@ -12,14 +12,14 @@ public:
    const std::vector<SudokuGrid> &solve();
 
 private:
-   SudokuGrid _sdkg;
-   int _nMaxSolutions;
-   std::vector<SudokuGrid> _solutions;
-   int _numberOfNotSolvables;
-   int _maxRecursionDepth;
-   int _numberOfNakedSingles;
-   int _numberOfHiddenSingles;
-   int _numberOfNakedPairs;
+   SudokuGrid sdkg_;
+   int nMaxSolutions_;
+   std::vector<SudokuGrid> solutions_;
+   int numberOfNotSolvables_;
+   int maxRecursionDepth_;
+   int numberOfNakedSingles_;
+   int numberOfHiddenSingles_;
+   int numberOfNakedPairs_;
 
    bool solveNakedSingles(SudokuGrid &sdkg);
    bool solveHiddenSingle(SudokuGrid &sdkg);
