@@ -196,9 +196,9 @@ bool SudokuSolver::solveNakedPair(SudokuGrid::group_t &group)
       if (startIndex != endIndex) {
          ++startIndex;
          startIndex = std::find_if(startIndex, endIndex,
-                              [pIndex1](const SudokuGrid::set_t *set) {
-                                 return *set == **pIndex1;
-                              });
+                                   [pIndex1](const SudokuGrid::set_t *set) {
+                                      return *set == **pIndex1;
+                                   });
          auto pIndex2 = startIndex;
          if (startIndex != endIndex) {
             toBeRemoved = **pIndex1;
@@ -261,6 +261,7 @@ void SudokuSolver::solveByRecursion(SudokuGrid &sdkg, int level)
       bool found = false;
       int row = 0;
       int column = 0;
+      
       while (row < SudokuGrid::ORDER2 && !found) {
          while (column < SudokuGrid::ORDER2 && !found) {
             found = !sdkg.cellIsSolved(row, column);
