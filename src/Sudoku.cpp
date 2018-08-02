@@ -12,20 +12,18 @@
 
 using namespace std;
 
-//------------------------------------------------------------------------------
-
 int main(int argc, char *argv[])
 {
-   vector<string> input;
+   vector<string> inputPuzzles;
 
    if (argc > 1) {
       cout << "- " << APPNAME_VERSION << " started\n\n";
 
       for (int i = 1; i < argc; ++i) {
-         input.push_back(argv[i]);
+         inputPuzzles.push_back(argv[i]);
       }
 
-      for (auto fileName : input) {
+      for (const auto &fileName : inputPuzzles) {
          try {
             ifstream Input(fileName.c_str());
 
@@ -34,28 +32,30 @@ int main(int argc, char *argv[])
                exit(EXIT_FAILURE);
             }
 
-            cout << "---- Sudoku file: " << fileName << "\n\n";
+            cout << "---- Sudoku puzzle file: " << fileName << "\n\n";
 
-            SudokuGrid sdkg;
+            SudokuGrid puzzle;
             vector<SudokuGrid> solutions(5);
 
-            Input >> sdkg;
-            cout << "- Number of clues: " << sdkg.getNumberOfCellsSolved()
-                 << endl;
-            cout << endl << sdkg << endl;
-            SudokuSolver sdkSolver(sdkg, 15);
+            Input >> puzzle;
+            cout << "- Number of clues: " << puzzle.getNumberOfCellsSolved()
+                 << "\n\n"
+                 << puzzle << endl;
+            SudokuSolver sdkSolver(puzzle, 15);
 
             auto t1 = chrono::system_clock::now();
             solutions = sdkSolver.solve();
             chrono::duration<double> d = chrono::system_clock::now() - t1;
+
             cout << "---- Processing time: " << fixed << setprecision(4)
-                 << d.count() << " sec" << endl
+                 << d.count() << " sec\n"
                  << endl;
             cout << "---- Sudoku solution(s), " << solutions.size()
-                 << " found:" << endl
+                 << " found:\n"
                  << endl;
+
             for (const auto &solution : solutions) {
-               cout << solution << endl;
+               cout << solution << "\n";
             }
             cout << "- Sudoku solver, solved puzzle: " << fileName << endl
                  << endl;
