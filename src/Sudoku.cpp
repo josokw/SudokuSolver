@@ -43,12 +43,13 @@ int main(int argc, char *argv[])
                  << puzzle << endl;
             SudokuSolver sdkSolver(puzzle, 15);
 
-            auto t1 = chrono::system_clock::now();
+            auto startTP = chrono::system_clock::now();
             solutions = sdkSolver.solve();
-            chrono::duration<double> d = chrono::system_clock::now() - t1;
+            chrono::duration<double> dur =
+               chrono::system_clock::now() - startTP;
 
             cout << "---- Processing time: " << fixed << setprecision(4)
-                 << d.count() << " sec\n"
+                 << dur.count() << " sec\n"
                  << endl;
             cout << "---- Sudoku solution(s), " << solutions.size()
                  << " found:\n"
@@ -57,8 +58,6 @@ int main(int argc, char *argv[])
             for (const auto &solution : solutions) {
                cout << solution << "\n";
             }
-            cout << "- Sudoku solver, solved puzzle: " << fileName << endl
-                 << endl;
          } catch (const exception &e) {
             clog << "- EXCEPTION " << argv[0] << ": " << e.what() << endl;
          } catch (...) {
