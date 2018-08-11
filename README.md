@@ -1,5 +1,7 @@
 # Sudoku solver
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bd50fdc4c94d4d519bbc16befcf6d45b)](https://www.codacy.com/project/josokw/SudokuSolver/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=josokw/SudokuSolver&amp;utm_campaign=Badge_Grade_Dashboard)
+
 Console application implemented in C++. The initial code was developed in
 C++98. It is now refactored to C++14.
 
