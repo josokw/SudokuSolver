@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++14 -Wall -Wextra -Weffc++ -Wpedantic \
+CXXFLAGS = -std=c++17 -g -Wall -Wextra -Weffc++ -Wpedantic \
            -Wold-style-cast -Winit-self -Wno-unused -Wshadow \
 		   -Wno-parentheses -Wlogical-op -Wredundant-decls \
 		   -Wcast-align -Wsign-promo -Wmissing-include-dirs \
