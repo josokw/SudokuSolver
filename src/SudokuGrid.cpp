@@ -6,8 +6,8 @@
 #include <string>
 
 namespace {
-const std::string subhorz(13, '-');
-const std::string subhorz2(13, ' ');
+const std::string subhorz(SudokuGrid::ORDER2 + SudokuGrid::ORDER + 1, '-');
+const std::string subhorz2(SudokuGrid::ORDER2 + SudokuGrid::ORDER + 1, ' ');
 const std::string horz = "+" + subhorz + "+" + subhorz + "+" + subhorz + "+";
 const std::string horz2 =
    "|" + subhorz2 + "|" + subhorz2 + "|" + subhorz2 + "|";
@@ -35,7 +35,7 @@ std::ostream &operator<<(std::ostream &os, const SudokuGrid &sdkg)
       os << std::endl;
       if ((row != SudokuGrid::ORDER2 - 1) &&
           (row % SudokuGrid::ORDER == (SudokuGrid::ORDER - 1))) {
-         // @TODO Remove magic number
+         /// @todo Remove magic number
          os << std::string(29, '-') << std::endl;
       }
    }
