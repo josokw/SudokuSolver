@@ -23,7 +23,11 @@
 # Backup files
 *~
 
+# Doxygen
+html
+
 # Dependencies
 depend
 
+# Executable
 sudoku
