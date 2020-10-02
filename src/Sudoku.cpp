@@ -10,14 +10,12 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 int main(int argc, char *argv[])
 {
-   vector<string> inputPuzzles;
+   std::vector<std::string> inputPuzzles;
 
    if (argc > 1) {
-      cout << "- " << APPNAME_VERSION << " started\n\n";
+      std::cout << "- " << APPNAME_VERSION << " started\n\n";
 
       for (int i = 1; i < argc; ++i) {
          inputPuzzles.push_back(argv[i]);
@@ -25,48 +23,49 @@ int main(int argc, char *argv[])
 
       for (const auto &fileName : inputPuzzles) {
          try {
-            ifstream Input(fileName.c_str());
+            std::ifstream Input(fileName.c_str());
 
             if (!Input) {
-               cerr << "- ERROR:  can not open file " << fileName << "\n\n";
+               std::cerr << "- ERROR:  can not open file " << fileName
+                         << "\n\n";
                exit(EXIT_FAILURE);
             }
 
-            cout << "---- Sudoku puzzle file: " << fileName << "\n\n";
+            std::cout << "---- Sudoku puzzle file: " << fileName << "\n\n";
 
             SudokuGrid puzzle;
-            vector<SudokuGrid> solutions(5);
+            std::vector<SudokuGrid> solutions(5);
 
             Input >> puzzle;
-            cout << "- Number of clues: " << puzzle.getNumberOfCellsSolved()
-                 << "\n\n"
-                 << puzzle << endl;
+            std::cout << "- Number of clues: "
+                      << puzzle.getNumberOfCellsSolved() << "\n\n"
+                      << puzzle << std::endl;
             SudokuSolver sdkSolver(puzzle, 15);
 
-            auto startTP = chrono::system_clock::now();
+            auto startTP = std::chrono::system_clock::now();
             solutions = sdkSolver.solve();
-            chrono::duration<double> dur =
-               chrono::system_clock::now() - startTP;
+            std::chrono::duration<double> dur =
+               std::chrono::system_clock::now() - startTP;
 
-            cout << "---- Processing time: " << fixed << setprecision(4)
-                 << dur.count() << " sec\n"
-                 << endl;
-            cout << "---- Sudoku solution(s), " << solutions.size()
-                 << " found:\n"
-                 << endl;
+            std::cout << "---- Processing time: " << std::fixed
+                      << std::setprecision(4) << dur.count() << " sec\n\n";
+            std::cout << "---- Sudoku solution(s), " << solutions.size()
+                      << " found:\n"
+                      << std::endl;
 
             for (const auto &solution : solutions) {
-               cout << solution << "\n";
+               std::cout << solution << "\n";
             }
-         } catch (const exception &e) {
-            clog << "- EXCEPTION " << argv[0] << ": " << e.what() << endl;
+         } catch (const std::exception &e) {
+            std::clog << "- EXCEPTION " << argv[0] << ": " << e.what()
+                      << std::endl;
          } catch (...) {
-            clog << "- UNKNOWN EXCEPTION " << argv[0] << endl;
+            std::clog << "- UNKNOWN EXCEPTION " << argv[0] << std::endl;
          }
       }
    }
    else {
-      cout << "- USAGE: " << argv[0] << " <Sudoku files>" << endl;
+      std::cout << "- USAGE: " << argv[0] << " <Sudoku files>" << std::endl;
    }
 
    return 0;
